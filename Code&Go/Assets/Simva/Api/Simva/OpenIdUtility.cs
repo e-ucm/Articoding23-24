@@ -599,7 +599,7 @@ namespace Simva
 		public static IAsyncOperation<AuthorizationInfo> GetToken(string tokenUrl, string formUrlEncoded, string clientId)
         {
             var result = new AsyncCompletionSource<AuthorizationInfo>();
-            UnityWebRequest uwr = UnityWebRequest.Post(tokenUrl, "");
+            UnityWebRequest uwr = UnityWebRequest.PostWwwForm(tokenUrl, "");
 			byte[] bytes = Encoding.UTF8.GetBytes(formUrlEncoded);
 			UploadHandlerRaw uH = new UploadHandlerRaw(bytes);
 			uH.contentType = "application/x-www-form-urlencoded";

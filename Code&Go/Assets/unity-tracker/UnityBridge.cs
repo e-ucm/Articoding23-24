@@ -229,7 +229,7 @@ namespace AssetPackage
 						request = UnityWebRequest.Get(requestSettings.uri);
 						break;
 					case "POST":
-						request = UnityWebRequest.Post(requestSettings.uri, "");
+						request = UnityWebRequest.PostWwwForm(requestSettings.uri, "");
 						break;
 					case "PUT":
 						request = UnityWebRequest.Put(requestSettings.uri, "");

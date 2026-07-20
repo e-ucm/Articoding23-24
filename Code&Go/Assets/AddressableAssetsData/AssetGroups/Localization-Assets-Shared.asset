@@ -17,73 +17,25 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: 78c0b297c7371944a88ebaa62c590bde
   m_SerializeEntries:
-  - m_GUID: a894dd1023aa1204dbc04675aada18ae
-    m_Address: UIText Shared Data
+  - m_GUID: 0adb858ab7533944cb93d5d83be2fec2
+    m_Address: BoardObject Data Shared Data
     m_ReadOnly: 1
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cee591da47cfcc540ba90c0dcafe72e7
-    m_Address: Categories Info Shared Data
-    m_ReadOnly: 1
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5488e7fb6d014ee4e8f5dcf0dbc9ce67
-    m_Address: Levels Info Shared Data
-    m_ReadOnly: 1
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d06c343659e3fe646a5f9ecb6cbb3144
-    m_Address: temary_info Shared Data
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f98810d240582ac40be247acd22d922c
-    m_Address: BlocklyLocalizedTextAssets Shared Data
-    m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 0cb20202274dbd645b2ec8c9ac22ad0a
     m_Address: LevelInitialStates Shared Data
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 683e20d7caf70d24f9b84521e6736e9a
-    m_Address: Tutorials Info Shared Data
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3bb3df834704bcf4cb04e4ab1f2663bb
-    m_Address: CountryFlags Shared Data
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8b643ace1f13e814484b503a64e70316
-    m_Address: Tutorial Images Shared Data
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 0adb858ab7533944cb93d5d83be2fec2
-    m_Address: BoardObject Data Shared Data
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cea29a7f33b93df4f92fcabe8eef0c39
-    m_Address: CreditsUI Shared Data
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: a7210f51a0697f647a039bb956365be6
-    m_Address: Tutorial-Pop-Ups Shared Data
+  - m_GUID: 19095e10c064a5f479a14d2474aa4711
+    m_Address: tut_door
     m_ReadOnly: 1
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Locale-en
+    - Locale-es
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 84c2393b91541f444811c7fc43a5c75a
-    m_Address: End text Shared Data
-    m_ReadOnly: 1
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 45824ea34dbd1d747893280825d7b109
-    m_Address: tut_none
+  - m_GUID: 206e1d13e57c2cc449b3c901241d3d27
+    m_Address: playIcon
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en
@@ -91,39 +43,23 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 27ad02fb47fc2a84f8a25743f5982ebb
     m_Address: GameOverMessages Shared Data
-    m_ReadOnly: 0
+    m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ec3c30edc59cf7945b800c7c7ec17a45
-    m_Address: tut_var
+  - m_GUID: 3bb3df834704bcf4cb04e4ab1f2663bb
+    m_Address: CountryFlags Shared Data
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 41f54c9739f95eb4fbc33ba29b0e2e3e
+    m_Address: temaryIcon
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en
     - Locale-es
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: dd74dd0067e32714185cd04dd6680173
-    m_Address: tut_stars
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    - Locale-es
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f3a67245b2e43994d8b5242e7a52a545
-    m_Address: restartIcon
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-es
-    - Locale-en
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 206e1d13e57c2cc449b3c901241d3d27
-    m_Address: playIcon
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-es
-    - Locale-en
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: afcc796950b08054b9365939abcf8b18
-    m_Address: tut_operators
+  - m_GUID: 45824ea34dbd1d747893280825d7b109
+    m_Address: tut_none
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-en
@@ -136,20 +72,6 @@ MonoBehaviour:
     - Locale-en
     - Locale-es
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 41f54c9739f95eb4fbc33ba29b0e2e3e
-    m_Address: temaryIcon
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-es
-    - Locale-en
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ffb90e1098aade64d8810dfef97dfc37
-    m_Address: exitIcon
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    - Locale-es
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 485a5a9671ceabe46a41b2f0b760198c
     m_Address: tut_cells
     m_ReadOnly: 1
@@ -157,15 +79,23 @@ MonoBehaviour:
     - Locale-en
     - Locale-es
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 19095e10c064a5f479a14d2474aa4711
-    m_Address: tut_door
+  - m_GUID: 5488e7fb6d014ee4e8f5dcf0dbc9ce67
+    m_Address: Levels Info Shared Data
     m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    - Locale-es
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: dc03dace7d6a78c4c9ae62a59af260f2
-    m_Address: Assets/Localization/Tables/Community Shared Data.asset
+  - m_GUID: 683e20d7caf70d24f9b84521e6736e9a
+    m_Address: Tutorials Info Shared Data
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 84c2393b91541f444811c7fc43a5c75a
+    m_Address: End text Shared Data
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b643ace1f13e814484b503a64e70316
+    m_Address: Tutorial Images Shared Data
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -173,6 +103,76 @@ MonoBehaviour:
     m_Address: Assets/Localization/Tables/MessageReply Shared Data.asset
     m_ReadOnly: 1
     m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7210f51a0697f647a039bb956365be6
+    m_Address: Tutorial-Pop-Ups Shared Data
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a894dd1023aa1204dbc04675aada18ae
+    m_Address: UIText Shared Data
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: afcc796950b08054b9365939abcf8b18
+    m_Address: tut_operators
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    - Locale-es
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cea29a7f33b93df4f92fcabe8eef0c39
+    m_Address: CreditsUI Shared Data
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cee591da47cfcc540ba90c0dcafe72e7
+    m_Address: Categories Info Shared Data
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d06c343659e3fe646a5f9ecb6cbb3144
+    m_Address: temary_info Shared Data
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc03dace7d6a78c4c9ae62a59af260f2
+    m_Address: Assets/Localization/Tables/Community Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd74dd0067e32714185cd04dd6680173
+    m_Address: tut_stars
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    - Locale-es
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec3c30edc59cf7945b800c7c7ec17a45
+    m_Address: tut_var
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    - Locale-es
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f3a67245b2e43994d8b5242e7a52a545
+    m_Address: restartIcon
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    - Locale-es
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f98810d240582ac40be247acd22d922c
+    m_Address: BlocklyLocalizedTextAssets Shared Data
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ffb90e1098aade64d8810dfef97dfc37
+    m_Address: exitIcon
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-en
+    - Locale-es
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: fcd72a3575af0a34e932bbaab802abd7, type: 2}

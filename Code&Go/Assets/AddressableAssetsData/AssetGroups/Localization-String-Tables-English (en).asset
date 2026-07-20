@@ -16,58 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 49ca8cac984af6d4a94d25e8c7e3e02e
-  m_SerializeEntries:
-  - m_GUID: 4602f6ee137dea040b226371bc1f5e7c
-    m_Address: Tutorial-Pop-Ups_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2825c86e582318d4497a10b348eab1ff
-    m_Address: Levels Info_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    - Preload
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: e3c4fee569c7e3e4fa968492c9c56c29
-    m_Address: End text_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fc1d24d8f7d03e04f8c919ae862a8bfc
-    m_Address: primer_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    - Preload
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 6de77f5ef86e93b42b59dfe8511f26ce
-    m_Address: Categories Info_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    - Preload
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 29ae23064eec16d4c9017cd932087054
-    m_Address: Community_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: c07def379602ce748a420f594b351f1e
-    m_Address: MessageReply_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 34f11fee2c5eeb04789272c8b5a72803
-    m_Address: CreditsUI_en
-    m_ReadOnly: 1
-    m_SerializedLabels:
-    - Locale-en
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: fcd72a3575af0a34e932bbaab802abd7, type: 2}
   m_SchemaSet:

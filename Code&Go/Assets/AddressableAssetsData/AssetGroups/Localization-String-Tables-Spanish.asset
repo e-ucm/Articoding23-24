@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-String-Tables-Spanish
+  m_EditorClassIdentifier: 
+  m_GroupName: Localization-String-Tables-Spanish
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 3f0637385a5c9464683fffdd990707e0
+  m_SerializeEntries:
+  - m_GUID: 1aa59b3da1ec7d34da382fc9f50c9094
+    m_Address: MessageReply_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 30ab5ee14b3e2ec449a88cb75ea8eb42
+    m_Address: Tutorials Info_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 420473bfe15144a4a97852492defb567
+    m_Address: Levels Info_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5ab861ebd2df33240a620348d89fd23f
+    m_Address: BoardObject Data_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 88c64c12a144aa34d9dc8346d558ae28
+    m_Address: CreditsUI_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 98d1a39b393069049b384f7018927cd6
+    m_Address: temary_info_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b3f8aef9915db9e44b46e336650aa462
+    m_Address: Tutorial-Pop-Ups_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6757256a07dcfc4d8ca381eb847d577
+    m_Address: End text_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b6b190e1eae3e264881c942f4eaca9a3
+    m_Address: primer_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d2c4c74770cac4247bb531f689502e9b
+    m_Address: Categories Info_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    - Preload
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd8376d7783c3c24eac52141045548f5
+    m_Address: GameOverMessages_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fdeade783d82a054e916c51e4a4950b3
+    m_Address: Community_es
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-es
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: fcd72a3575af0a34e932bbaab802abd7, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 7c0eb4039c46426418a59a7db68c290e, type: 2}
+    - {fileID: 11400000, guid: 981f41d883762d7408a0a155f6d2fe12, type: 2}
