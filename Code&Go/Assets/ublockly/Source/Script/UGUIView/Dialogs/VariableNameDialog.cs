@@ -16,7 +16,7 @@ limitations under the License.
 
 ****************************************************************************/
 
-using AssetPackage; //articoding
+using Xasu.HighLevel; //articoding
 using System.Xml; //articoding
 using UnityEngine;
 using UnityEngine.UI;
@@ -52,12 +52,12 @@ namespace UBlockly.UGUI
                 {
                     BlocklyUI.WorkspaceView.Workspace.RenameVariable(mOldVarName, m_Input.text);
 
-                    TrackerAsset.Instance.setVar("new_variable_name", m_Input.text); //articoding
-                    TrackerAsset.Instance.setVar("old_variable_name", mOldVarName);
-                    TrackerAsset.Instance.setVar("block_type", "variable");
-                    TrackerAsset.Instance.setVar("action", "rename");
-                    TrackerAsset.Instance.setVar("level", GameManager.Instance.GetCurrentLevelName().ToLower());
-                    TrackerAsset.Instance.GameObject.Interacted("rename_variable");
+                    GameObjectTracker.Instance.Interacted("rename_variable") //articoding
+                        .WithResultExtension("articoding://ext/new_variable_name", m_Input.text)
+                        .WithResultExtension("articoding://ext/old_variable_name", mOldVarName)
+                        .WithResultExtension("articoding://ext/block_type", "variable")
+                        .WithResultExtension("articoding://ext/action", "rename")
+                        .WithResultExtension("articoding://ext/level", GameManager.Instance.GetCurrentLevelName().ToLower());
                 }
                 else
                 {
@@ -65,11 +65,11 @@ namespace UBlockly.UGUI
 
                     if (model == null) return; //articoding
 
-                    TrackerAsset.Instance.setVar("variable_name", model.Name); //articoding
-                    TrackerAsset.Instance.setVar("block_type", "variable");
-                    TrackerAsset.Instance.setVar("action", "declare");
-                    TrackerAsset.Instance.setVar("level", GameManager.Instance.GetCurrentLevelName().ToLower());
-                    TrackerAsset.Instance.GameObject.Interacted("new_variable");
+                    GameObjectTracker.Instance.Interacted("new_variable") //articoding
+                        .WithResultExtension("articoding://ext/variable_name", model.Name)
+                        .WithResultExtension("articoding://ext/block_type", "variable")
+                        .WithResultExtension("articoding://ext/action", "declare")
+                        .WithResultExtension("articoding://ext/level", GameManager.Instance.GetCurrentLevelName().ToLower());
                 }
 
             });

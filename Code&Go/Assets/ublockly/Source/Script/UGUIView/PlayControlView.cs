@@ -1,4 +1,4 @@
-using AssetPackage; //articoding
+using Xasu.HighLevel; //articoding
 using System.Collections.Generic;
 using System.Xml; //articoding
 using UnityEngine;
@@ -119,8 +119,8 @@ namespace UBlockly.UGUI
                 string text = UBlockly.Xml.DomToText(dom);
                 text = GameManager.Instance.ChangeCodeIDs(text);
 
-                TrackerAsset.Instance.setVar("code", "\r\n" + text);
-                TrackerAsset.Instance.Completable.Progressed(GameManager.Instance.GetCurrentLevelName(), CompletableTracker.Completable.Level, 0f);
+                CompletableTracker.Instance.Progressed(GameManager.Instance.GetCurrentLevelName(), CompletableTracker.CompletableType.Level, 0f)
+                    .WithResultExtension("articoding://ext/code", "\r\n" + text);
                 //articoding
                 
                 CSharp.Runner.Run(mWorkspaceView.Workspace);

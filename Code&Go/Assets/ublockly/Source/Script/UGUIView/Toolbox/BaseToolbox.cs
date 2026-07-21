@@ -16,7 +16,7 @@ limitations under the License.
 
 ****************************************************************************/
 
-using AssetPackage; //articoding
+using Xasu.HighLevel; //articoding
 using Simva; //articoding
 using System;
 using System.Collections.Generic;
@@ -236,12 +236,11 @@ namespace UBlockly.UGUI
             string text = UBlockly.Xml.DomToText(dom);
             text = GameManager.Instance.ChangeCodeIDs(text);
 
-            TrackerAsset.Instance.setVar("block_type", newBlockView.Block.Type);
-            TrackerAsset.Instance.setVar("code", "\r\n" + text);
-
-            TrackerAsset.Instance.setVar("action", "create");
-            TrackerAsset.Instance.setVar("level", GameManager.Instance.GetCurrentLevelName().ToLower());
-            TrackerAsset.Instance.GameObject.Interacted(id);
+            GameObjectTracker.Instance.Interacted(id)
+                .WithResultExtension("articoding://ext/block_type", newBlockView.Block.Type)
+                .WithResultExtension("articoding://ext/code", "\r\n" + text)
+                .WithResultExtension("articoding://ext/action", "create")
+                .WithResultExtension("articoding://ext/level", GameManager.Instance.GetCurrentLevelName().ToLower());
         }
 
         /// <summary>
