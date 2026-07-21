@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
-using AssetPackage;
+using Xasu.HighLevel;
 
 public class BoardManager : Listener
 {
@@ -946,7 +946,9 @@ public class BoardManager : Listener
         streamRoom.GameOver();
 
         var levelName = GameManager.Instance.GetCurrentLevelName();
-        TrackerAsset.Instance.Completable.Completed(levelName, CompletableTracker.Completable.Level, false, 0f);
+        CompletableTracker.Instance.Completed(levelName, CompletableTracker.CompletableType.Level)
+            .WithSuccess(false)
+            .WithScoreRaw(0f);
     }
 
     public CameraMouseInput GetMouseInput()
@@ -1038,14 +1040,14 @@ public class BoardManager : Listener
         if (hintsShown >= hintsParent.childCount /*|| ProgressManager.Instance.GetHintsRemaining() == 0*/)
             DeactivateHintButton();
 
-        TrackerAsset.Instance.setVar("level", GameManager.Instance.GetCurrentLevelName());
-        TrackerAsset.Instance.GameObject.Interacted("hint_button");
+        GameObjectTracker.Instance.Interacted("hint_button")
+            .WithResultExtension("articoding://ext/level", GameManager.Instance.GetCurrentLevelName());
     }
 
     public void TraceResetView(string buttonName)
     {
-        TrackerAsset.Instance.setVar("level", GameManager.Instance.GetCurrentLevelName());
-        TrackerAsset.Instance.GameObject.Interacted(buttonName);
+        GameObjectTracker.Instance.Interacted(buttonName)
+            .WithResultExtension("articoding://ext/level", GameManager.Instance.GetCurrentLevelName());
     }
     
     public int GetNumOfTopBlocksUsed()

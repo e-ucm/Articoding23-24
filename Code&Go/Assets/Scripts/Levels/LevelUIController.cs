@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using AssetPackage;
+using Xasu.HighLevel;
 
 public class LevelUIController : MonoBehaviour
 {
@@ -32,7 +32,7 @@ public class LevelUIController : MonoBehaviour
         });
         TweenManager.Instance.AddTween(slideTween);
 
-        TrackerAsset.Instance.Accessible.Accessed("tutorials_panel_open");
+        AccessibleTracker.Instance.Accessed("tutorials_panel_open");
     }
 
     public void Close(RectTransform panel)
@@ -59,6 +59,6 @@ public class LevelUIController : MonoBehaviour
 
         TweenManager.Instance.AddTween(slideTween);
 
-        TrackerAsset.Instance.Accessible.Accessed("tutorials_panel_close");
+        AccessibleTracker.Instance.Accessed("tutorials_panel_close");
     }
 }

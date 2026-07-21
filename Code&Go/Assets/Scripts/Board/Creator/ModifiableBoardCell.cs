@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
-using AssetPackage;
+using Xasu.HighLevel;
 
 public class ModifiableBoardCell : MonoBehaviour, IMouseListener
 {
@@ -33,9 +33,9 @@ public class ModifiableBoardCell : MonoBehaviour, IMouseListener
             Vector2Int pos = cell.GetPosition();
             boardManager.ReplaceCell(cell.GetNextID(), pos.x, pos.y);
             if (cameraInput != null) cameraInput.SetDragging(true);
-            TrackerAsset.Instance.setVar("cell_pos", pos.ToString());
-            TrackerAsset.Instance.setVar("new_cell_type", cell.GetNextID());
-            TrackerAsset.Instance.GameObject.Used("board_cell_change");
+            GameObjectTracker.Instance.Used("board_cell_change")
+                .WithResultExtension("articoding://ext/cell_pos", pos.ToString())
+                .WithResultExtension("articoding://ext/new_cell_type", cell.GetNextID());
         }
     }
 

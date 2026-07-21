@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
-using AssetPackage;
+using Xasu.HighLevel;
 using UBlockly.UGUI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
@@ -151,8 +151,10 @@ public class LevelTestManager : MonoBehaviour
             streamRoom.FinishLevel();
 
             string levelNameEditor = GameManager.Instance.GetCurrentLevelName();
-            TrackerAsset.Instance.setVar("steps", board.GetCurrentSteps());
-            TrackerAsset.Instance.Completable.Completed(levelNameEditor, CompletableTracker.Completable.Level, true, -1f);
+            CompletableTracker.Instance.Completed(levelNameEditor, CompletableTracker.CompletableType.Level)
+                .WithSuccess(true)
+                .WithScoreRaw(-1f)
+                .WithResultExtension("articoding://ext/steps", board.GetCurrentSteps());
             
         }
     }
@@ -337,8 +339,9 @@ public class LevelTestManager : MonoBehaviour
 
             if (fromButton)
             {
-                TrackerAsset.Instance.setVar("mode", "test");
-                TrackerAsset.Instance.setVar("board", boardState != boardString ? boardState : "unchanged");
+                GameObjectTracker.Instance.Interacted("editor_mode_change_button")
+                    .WithResultExtension("articoding://ext/mode", "test")
+                    .WithResultExtension("articoding://ext/board", boardState != boardString ? boardState : "unchanged");
             }
             boardString = boardState;
         }
@@ -351,16 +354,14 @@ public class LevelTestManager : MonoBehaviour
             boardCreator.FitBoard();
 
             if (fromButton)
-                TrackerAsset.Instance.setVar("mode", "edition");
+                GameObjectTracker.Instance.Interacted("editor_mode_change_button")
+                    .WithResultExtension("articoding://ext/mode", "edition");
         }
 
-        if (fromButton)
-            TrackerAsset.Instance.GameObject.Interacted("editor_mode_change_button");
-
         if (inCreator)
-            TrackerAsset.Instance.Accessible.Accessed("editor");
+            AccessibleTracker.Instance.Accessed("editor");
         else
-            TrackerAsset.Instance.Accessible.Accessed("tester");
+            AccessibleTracker.Instance.Accessed("tester");
     }
 
     public void LoadMainMenu()
@@ -372,12 +373,13 @@ public class LevelTestManager : MonoBehaviour
             string text = UBlockly.Xml.DomToText(dom);
             text = GameManager.Instance.ChangeCodeIDs(text);
 
-            if (!completed)
-            {
-                TrackerAsset.Instance.setVar("code", "\r\n" + text);
-                var levelName = GameManager.Instance.GetCurrentLevelName();
-                TrackerAsset.Instance.Completable.Completed(levelName, CompletableTracker.Completable.Level, false, -1f);
-            }
+        if (!completed)
+        {
+            CompletableTracker.Instance.Completed(levelName, CompletableTracker.CompletableType.Level)
+                .WithSuccess(false)
+                .WithScoreRaw(-1f)
+                .WithResultExtension("articoding://ext/code", "\r\n" + text);
+        }
         }
 
         GameManager.Instance.ResetCommunityElements();
@@ -397,10 +399,10 @@ public class LevelTestManager : MonoBehaviour
         board.GenerateBoardElements(initialState);
         debugPanel.SetActive(true);
         cameraFit.FitBoard(board.GetRows(), board.GetColumns());
-        TrackerAsset.Instance.GameObject.Interacted("editor_retry_button");
+        GameObjectTracker.Instance.Interacted("editor_retry_button");
 
         var levelName = GameManager.Instance.GetCurrentLevelName();
-        TrackerAsset.Instance.Completable.Initialized(levelName, CompletableTracker.Completable.Level);
+        CompletableTracker.Instance.Initialized(levelName, CompletableTracker.CompletableType.Level);
     }
 
     public void RetryLevel()
@@ -425,7 +427,7 @@ public class LevelTestManager : MonoBehaviour
         transparentRect.SetActive(false);
         blackRect.SetActive(false);
         debugPanel.SetActive(false);
-        TrackerAsset.Instance.GameObject.Used("end_panel_minimized");
+        GameObjectTracker.Instance.Used("end_panel_minimized");
     }
 
     public void MinimizeGameOverPanel()
@@ -436,7 +438,7 @@ public class LevelTestManager : MonoBehaviour
         transparentRect.SetActive(false);
         blackRect.SetActive(false);
         debugPanel.SetActive(false);
-        TrackerAsset.Instance.GameObject.Used("game_over_panel_minimized");
+        GameObjectTracker.Instance.Used("game_over_panel_minimized");
     }
 
     public void SetActiveNoInputPanel()

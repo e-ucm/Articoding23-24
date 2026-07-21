@@ -44,13 +44,14 @@ public class LoadManager : MonoBehaviour {
     }
 
     private IEnumerator Start() {
-        // Wait one frame to allow SimvaPlugin to complete its Start coroutine
-        yield return null;
-
         yield return WaitUntilLoadingIsComplete();
-
         if (autoStart && lastLoadedIndex == -1)
-            LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        {
+            int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;
+            Scene nextScene = SceneManager.GetSceneByBuildIndex(nextIndex);
+            if (!nextScene.IsValid() || !nextScene.isLoaded)
+                LoadScene(nextIndex);
+        }
     }
 
     void LateUpdate() {

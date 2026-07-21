@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Settings;
-using AssetPackage;
+using Xasu.HighLevel;
 
 public class OptionsManager : MonoBehaviour
 {
@@ -53,8 +53,8 @@ public class OptionsManager : MonoBehaviour
     {
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
 
-        TrackerAsset.Instance.setVar("language", LocalizationSettings.SelectedLocale.Identifier.Code);
-        TrackerAsset.Instance.GameObject.Interacted("language_dropdown");
+        GameObjectTracker.Instance.Interacted("language_dropdown")
+            .WithResultExtension("articoding://ext/language", LocalizationSettings.SelectedLocale.Identifier.Code);
     }
 
     public void OnResolutionDropdownUsed()
@@ -62,16 +62,16 @@ public class OptionsManager : MonoBehaviour
         Resolution res = Screen.resolutions[Screen.resolutions.Length - resolutionDropdown.value - 1];
         Screen.SetResolution(res.width, res.height, Screen.fullScreen);
 
-        TrackerAsset.Instance.setVar("resolution", res.ToString());
-        TrackerAsset.Instance.GameObject.Interacted("resolution_dropdown");
+        GameObjectTracker.Instance.Interacted("resolution_dropdown")
+            .WithResultExtension("articoding://ext/resolution", res.ToString());
     }
 
     public void OnFullscreenToggleUsed()
     {
         Screen.fullScreen = fullscreenToggle.isOn;
 
-        TrackerAsset.Instance.setVar("is_fullscreen", fullscreenToggle.isOn);
-        TrackerAsset.Instance.GameObject.Interacted("fullscreen_toggle");
+        GameObjectTracker.Instance.Interacted("fullscreen_toggle")
+            .WithResultExtension("articoding://ext/is_fullscreen", fullscreenToggle.isOn);
     }
 
 

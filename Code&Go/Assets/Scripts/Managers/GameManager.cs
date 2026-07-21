@@ -1,4 +1,4 @@
-﻿using AssetPackage;
+﻿using Xasu.HighLevel;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -111,11 +111,11 @@ public class GameManager : MonoBehaviour {
         Debug.Log("Game Manager Start");
         LoadGame();
 
-        TrackerAsset.Instance.setVar("language", LocalizationSettings.SelectedLocale.Identifier.Code);
-        TrackerAsset.Instance.setVar("resolution", Screen.currentResolution.ToString());
-        TrackerAsset.Instance.setVar("fullscreen", Screen.fullScreen);
-        TrackerAsset.Instance.Completable.Initialized("articoding", CompletableTracker.Completable.Game);
-        TrackerAsset.Instance.Completable.Progressed("articoding", CompletableTracker.Completable.Game, ProgressManager.Instance.GetGameProgress());
+        CompletableTracker.Instance.Initialized("articoding", CompletableTracker.CompletableType.Game)
+            .WithResultExtension("articoding://ext/language", LocalizationSettings.SelectedLocale.Identifier.Code)
+            .WithResultExtension("articoding://ext/resolution", Screen.currentResolution.ToString())
+            .WithResultExtension("articoding://ext/fullscreen", Screen.fullScreen);
+        CompletableTracker.Instance.Progressed("articoding", CompletableTracker.CompletableType.Game, ProgressManager.Instance.GetGameProgress());
         Debug.Log("Game Manager Start Finished");
     }
 
