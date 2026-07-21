@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using AssetPackage;
+using Xasu.HighLevel;
 
 public class ArgumentLoader : MonoBehaviour
 {
@@ -36,38 +36,38 @@ public class ArgumentLoader : MonoBehaviour
 
     private void TraceCheckBox(bool active, string argName)
     {
-        TrackerAsset.Instance.setVar("argument_name", argName.ToLower());
-        TrackerAsset.Instance.setVar("element_type", currentObject.GetName().ToLower());
-        TrackerAsset.Instance.setVar("element_name", currentObject.GetNameWithIndex().ToLower());
-        TrackerAsset.Instance.setVar("element_id", currentObject.GetID().ToLower());
-        TrackerAsset.Instance.setVar("old_value", !active);
-        TrackerAsset.Instance.setVar("new_value", active);
-        TrackerAsset.Instance.setVar("action", "change_value");
-        TrackerAsset.Instance.GameObject.Interacted("argument_checkbox");
+        GameObjectTracker.Instance.Interacted("argument_checkbox")
+            .WithResultExtension("articoding://ext/argument_name", argName.ToLower())
+            .WithResultExtension("articoding://ext/element_type", currentObject.GetName().ToLower())
+            .WithResultExtension("articoding://ext/element_name", currentObject.GetNameWithIndex().ToLower())
+            .WithResultExtension("articoding://ext/element_id", currentObject.GetID().ToLower())
+            .WithResultExtension("articoding://ext/old_value", !active)
+            .WithResultExtension("articoding://ext/new_value", active)
+            .WithResultExtension("articoding://ext/action", "change_value");
     }
 
     public void LoadArgs()
     {
         if (currentObject == null) return;
 
-        TrackerAsset.Instance.setVar("element_type", currentObject.GetName().ToLower());
-        TrackerAsset.Instance.setVar("element_name", currentObject.GetNameWithIndex().ToLower());
-
         string[] args = new string[inputs.Length];
+        var promise = GameObjectTracker.Instance.Interacted(currentObject.GetID().ToLower())
+            .WithResultExtension("articoding://ext/element_type", currentObject.GetName().ToLower())
+            .WithResultExtension("articoding://ext/element_name", currentObject.GetNameWithIndex().ToLower())
+            .WithResultExtension("articoding://ext/action", "state_change");
+
         for (int i = 0; i < args.Length; i++)
         {
             if (inputs[i].gameObject.activeSelf)
             {
                 args[i] = inputs[i].GetInput();
-                TrackerAsset.Instance.setVar("arg_name", currentObject.GetArgsNames()[i].ToLower());
-                TrackerAsset.Instance.setVar("arg_value", args[i].ToLower());
+                promise
+                    .WithResultExtension("articoding://ext/arg_name", currentObject.GetArgsNames()[i].ToLower())
+                    .WithResultExtension("articoding://ext/arg_value", args[i].ToLower());
             }
         }
 
         currentObject.LoadArgs(args);
-
-        TrackerAsset.Instance.setVar("action", "state_change");
-        TrackerAsset.Instance.GameObject.Interacted(currentObject.GetID().ToLower());
     }
 
     private void Update()
