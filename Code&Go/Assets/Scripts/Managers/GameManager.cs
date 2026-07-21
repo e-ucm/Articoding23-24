@@ -1,7 +1,7 @@
 ﻿using AssetPackage;
-using Simva.Api;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
 using UnityEngine.SceneManagement;
@@ -236,11 +236,17 @@ public class GameManager : MonoBehaviour {
         return categories;
     }
 
+    private static string GenerateRandomBase58Key(int length)
+    {
+        var alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+        return new string(Enumerable.Range(0, length).Select(_ => alphabet[UnityEngine.Random.Range(0, alphabet.Length)]).ToArray()).ToLower();
+    }
+
     public string GetBlockId(UBlockly.Block block)
     {
         while (!blockIDs.ContainsKey(block))
         {
-            var blockId = block.Type + "_" + SimvaPlugin.SimvaApi<IStudentsApi>.GenerateRandomBase58Key(4);
+            var blockId = block.Type + "_" + GenerateRandomBase58Key(4);
             if (!blockIDs.ContainsValue(blockId))
                 blockIDs.Add(block, blockId);
         }

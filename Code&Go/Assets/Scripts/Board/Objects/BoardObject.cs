@@ -1,7 +1,7 @@
-﻿using Simva.Api;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Localization;
 
@@ -30,10 +30,16 @@ public class BoardObject : MonoBehaviour
 
     private string id;
 
+    private static string GenerateRandomBase58Key(int length)
+    {
+        var alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+        return new string(Enumerable.Range(0, length).Select(_ => alphabet[UnityEngine.Random.Range(0, alphabet.Length)]).ToArray()).ToLower();
+    }
+
     private void Awake()
     {
         if (string.IsNullOrEmpty(id))
-            id = GetNameAsLower() + "_" + SimvaPlugin.SimvaApi<IStudentsApi>.GenerateRandomBase58Key(4);
+            id = GetNameAsLower() + "_" + GenerateRandomBase58Key(4);
     }
 
     public virtual void SetBoard(BoardManager board)

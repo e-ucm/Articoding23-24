@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Localization.Settings;
-using uAdventure.Simva;
+using Simva;
 
 /// <summary>
 /// Manage the loading of the scenes
@@ -44,7 +44,8 @@ public class LoadManager : MonoBehaviour {
     }
 
     private IEnumerator Start() {
-        yield return SimvaExtension.Instance.OnAfterGameLoad();
+        // Wait one frame to allow SimvaPlugin to complete its Start coroutine
+        yield return null;
 
         yield return WaitUntilLoadingIsComplete();
 
