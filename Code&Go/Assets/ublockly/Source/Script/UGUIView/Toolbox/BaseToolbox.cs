@@ -21,7 +21,6 @@ using Simva; //articoding
 using System;
 using System.Collections.Generic;
 using System.Xml; //articoding
-using uAdventure.Simva; //articoding
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;

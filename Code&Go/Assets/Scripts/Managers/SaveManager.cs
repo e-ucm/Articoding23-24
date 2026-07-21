@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using uAdventure.Simva;
+using Simva;
 using UnityEngine;
 
 /// <summary>
@@ -48,11 +48,11 @@ public class SaveManager : MonoBehaviour {
         string token = "";
 
         try {
-            token = SimvaExtension.Instance.API.AuthorizationInfo.Username;
+            token = Simva.SimvaManager.Instance.API.Authorization.Agent.account.name;
             token += "_";
         }
         catch (System.Exception e) {
-            Debug.LogWarning("SimvaExtension: " + e.Message);
+            Debug.LogWarning("Simva.SimvaPlugin: " + e.Message);
             token = "";
         }
 

@@ -1,7 +1,7 @@
 ﻿using AssetPackage;
 using System.Collections;
 using System.Collections.Generic;
-using uAdventure.Simva;
+using Simva;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityFx.Async.Promises;
@@ -50,11 +50,11 @@ public class SettingsManager : MonoBehaviour {
     /// Post-Test Button function. Opens the test URL.
     /// </summary>
     public void GoToPostSurvey() {
-        //SimvaExtension.Instance.NotifyLoading(true);
-        string activityId = SimvaExtension.Instance.CurrentActivityId;
-        Simva.Model.Schedule schedule = SimvaExtension.Instance.Schedule;
+        //Simva.SimvaPlugin.Instance.Instance.NotifyLoading(true);
+        string activityId = Simva.SimvaManager.Instance.CurrentActivityId;
+        Simva.Model.Schedule schedule = Simva.SimvaManager.Instance.Schedule;
         var dic = schedule.Activities;
-        string username = SimvaExtension.Instance.API.AuthorizationInfo.Username;
+        string username = Simva.SimvaManager.Instance.API.Authorization.Agent.account.name;
 
         foreach (var activity in dic.Values) {
             if (activity.Type == "limesurvey" && activity.Name.ToLower().Contains("post")) {
@@ -62,7 +62,7 @@ public class SettingsManager : MonoBehaviour {
             }
         }
 
-        SimvaExtension.Instance.API.Api.GetActivityTarget(activityId).Then(
+        Simva.SimvaManager.Instance.API.Api.GetActivityTarget(activityId).Then(
             result => { Application.OpenURL(result[username]); });
     }
 
@@ -100,7 +100,7 @@ public class SettingsManager : MonoBehaviour {
     /// Change to the credits scene
     /// </summary>
     public void LoadCreditsScene() {
-        TrackerAsset.Instance.Accessible.Accessed("credits", AccessibleTracker.Accessible.Screen);
+        .Instance.Accessible.Accessed("credits", AccessibleTracker.Accessible.Screen);
 
         if (LoadManager.Instance == null) {
             SceneManager.LoadScene("EndScene");
@@ -115,7 +115,7 @@ public class SettingsManager : MonoBehaviour {
         bool gameCompleted = ProgressManager.Instance.GetGameProgress() == 1f;
         TrackerAsset.Instance.Completable.Completed("articoding", CompletableTracker.Completable.Game, gameCompleted, ProgressManager.Instance.GetTotalStars());
 
-        SimvaExtension.Instance.Quit();
+        Simva.SimvaPlugin.Instance.WantsToQuit();
     }
 
     public void TraceEditor() {
