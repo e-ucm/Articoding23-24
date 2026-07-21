@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using AssetPackage;
+using Xasu.HighLevel;
 
 public class DraggableObject : MonoBehaviour, IMouseListener
 {
@@ -74,12 +74,12 @@ public class DraggableObject : MonoBehaviour, IMouseListener
         dragging = true;
 
         string name = boardObject.GetName();
-        TrackerAsset.Instance.setVar("element_type", name.ToLower());
-        TrackerAsset.Instance.setVar("element_name", boardObject.GetNameWithIndex().ToLower());
-        TrackerAsset.Instance.setVar("position", lastPos.ToString());
-        TrackerAsset.Instance.setVar("rotation", boardObject.GetDirection().ToString().ToLower());
-        TrackerAsset.Instance.setVar("action", "pick");
-        TrackerAsset.Instance.GameObject.Interacted(boardObject.GetID());
+        GameObjectTracker.Instance.Interacted(boardObject.GetID())
+            .WithResultExtension("articoding://ext/element_type", name.ToLower())
+            .WithResultExtension("articoding://ext/element_name", boardObject.GetNameWithIndex().ToLower())
+            .WithResultExtension("articoding://ext/position", lastPos.ToString())
+            .WithResultExtension("articoding://ext/rotation", boardObject.GetDirection().ToString().ToLower())
+            .WithResultExtension("articoding://ext/action", "pick");
     }
 
     private void OnRightDown()
@@ -92,12 +92,12 @@ public class DraggableObject : MonoBehaviour, IMouseListener
         boardObject.Rotate(1);
 
         string name = boardObject.GetName();
-        TrackerAsset.Instance.setVar("element_type", name.ToLower());
-        TrackerAsset.Instance.setVar("element_name", boardObject.GetNameWithIndex().ToLower());
-        TrackerAsset.Instance.setVar("position", lastPos.ToString());
-        TrackerAsset.Instance.setVar("rotation", boardObject.GetDirection().ToString().ToLower());
-        TrackerAsset.Instance.setVar("action", "rotate");
-        TrackerAsset.Instance.GameObject.Interacted(boardObject.GetID());
+        GameObjectTracker.Instance.Interacted(boardObject.GetID())
+            .WithResultExtension("articoding://ext/element_type", name.ToLower())
+            .WithResultExtension("articoding://ext/element_name", boardObject.GetNameWithIndex().ToLower())
+            .WithResultExtension("articoding://ext/position", lastPos.ToString())
+            .WithResultExtension("articoding://ext/rotation", boardObject.GetDirection().ToString().ToLower())
+            .WithResultExtension("articoding://ext/action", "rotate");
     }
 
     private void OnLeftUp()
@@ -111,23 +111,22 @@ public class DraggableObject : MonoBehaviour, IMouseListener
             pos = new Vector3(Mathf.Round(pos.x), Mathf.Round(pos.y), Mathf.Round(pos.z));
 
             string name = boardObject.GetName();
-            TrackerAsset.Instance.setVar("element_type", name.ToLower());
-            TrackerAsset.Instance.setVar("element_name", boardObject.GetNameWithIndex().ToLower());
-            TrackerAsset.Instance.setVar("old_position", lastPos.ToString());
-            TrackerAsset.Instance.setVar("rotation", boardObject.GetDirection().ToString().ToLower());
 
             if (boardObject != null && pos.x < board.GetColumns() && pos.x >= 0 && pos.z < board.GetRows() && pos.z >= 0)
             {
                 Vector2Int newPos = new Vector2Int(Mathf.FloorToInt(pos.x), (Mathf.FloorToInt(pos.z)));
-                TrackerAsset.Instance.setVar("new_position", newPos.ToString());
 
                 //Si la posicion en la que se suelta es donde estaba colocado no se hace nada
                 if (lastPos == newPos)
                 {
                     transform.localPosition = new Vector3(lastPos.x, 0, lastPos.y);
-                    TrackerAsset.Instance.setVar("action", "move");
-                    TrackerAsset.Instance.setVar("exception", "placed_in_the_same_cell");
-                    TrackerAsset.Instance.GameObject.Interacted(boardObject.GetID());
+                    GameObjectTracker.Instance.Interacted(boardObject.GetID())
+                        .WithResultExtension("articoding://ext/element_type", name.ToLower())
+                        .WithResultExtension("articoding://ext/element_name", boardObject.GetNameWithIndex().ToLower())
+                        .WithResultExtension("articoding://ext/old_position", lastPos.ToString())
+                        .WithResultExtension("articoding://ext/rotation", boardObject.GetDirection().ToString().ToLower())
+                        .WithResultExtension("articoding://ext/action", "move")
+                        .WithResultExtension("articoding://ext/exception", "placed_in_the_same_cell");
                     return;
                 }
                 //Si se suelta en una celda ocupada o en un agujero se elimina
@@ -136,17 +135,29 @@ public class DraggableObject : MonoBehaviour, IMouseListener
                     //Se elimina el objeto en la posicion anterior
                     board.RemoveBoardObject(lastPos.x, lastPos.y);
                     Destroy(gameObject, 0.3f);
-                    TrackerAsset.Instance.setVar("action", "remove");
-                    TrackerAsset.Instance.setVar("exception", "placed_on_non_valid_cell");
-                    TrackerAsset.Instance.GameObject.Interacted(boardObject.GetID());
+                    GameObjectTracker.Instance.Interacted(boardObject.GetID())
+                        .WithResultExtension("articoding://ext/element_type", name.ToLower())
+                        .WithResultExtension("articoding://ext/element_name", boardObject.GetNameWithIndex().ToLower())
+                        .WithResultExtension("articoding://ext/old_position", lastPos.ToString())
+                        .WithResultExtension("articoding://ext/rotation", boardObject.GetDirection().ToString().ToLower())
+                        .WithResultExtension("articoding://ext/new_position", newPos.ToString())
+                        .WithResultExtension("articoding://ext/action", "remove")
+                        .WithResultExtension("articoding://ext/exception", "placed_on_non_valid_cell");
                     return;
                 }
                 //Si el objeto no se ha añadido al tablero
                 if (lastPos == -Vector2Int.one)
                 {
                     board.AddBoardObject(newPos.x, newPos.y, boardObject);
-                    TrackerAsset.Instance.setVar("first_time_placed", true);
                     if (argumentLoader != null) argumentLoader.SetBoardObject(boardObject);
+                    GameObjectTracker.Instance.Interacted(boardObject.GetID())
+                        .WithResultExtension("articoding://ext/element_type", name.ToLower())
+                        .WithResultExtension("articoding://ext/element_name", boardObject.GetNameWithIndex().ToLower())
+                        .WithResultExtension("articoding://ext/old_position", lastPos.ToString())
+                        .WithResultExtension("articoding://ext/rotation", boardObject.GetDirection().ToString().ToLower())
+                        .WithResultExtension("articoding://ext/new_position", newPos.ToString())
+                        .WithResultExtension("articoding://ext/action", "move")
+                        .WithResultExtension("articoding://ext/first_time_placed", true);
                 }
                 //Se mueve el objeto
                 else if (!board.MoveBoardObject(lastPos, newPos))
@@ -154,23 +165,39 @@ public class DraggableObject : MonoBehaviour, IMouseListener
                     //Si no se ha podido mover se deja donde estaba
                     transform.localPosition = new Vector3(lastPos.x, 0, lastPos.y);
 
-                    TrackerAsset.Instance.setVar("action", "move");
-                    TrackerAsset.Instance.setVar("exception", "denied_by_board");
-                    TrackerAsset.Instance.GameObject.Interacted(boardObject.GetID());
+                    GameObjectTracker.Instance.Interacted(boardObject.GetID())
+                        .WithResultExtension("articoding://ext/element_type", name.ToLower())
+                        .WithResultExtension("articoding://ext/element_name", boardObject.GetNameWithIndex().ToLower())
+                        .WithResultExtension("articoding://ext/old_position", lastPos.ToString())
+                        .WithResultExtension("articoding://ext/rotation", boardObject.GetDirection().ToString().ToLower())
+                        .WithResultExtension("articoding://ext/new_position", newPos.ToString())
+                        .WithResultExtension("articoding://ext/action", "move")
+                        .WithResultExtension("articoding://ext/exception", "denied_by_board");
                     return;
                 }
+                else
+                {
+                    GameObjectTracker.Instance.Interacted(boardObject.GetID())
+                        .WithResultExtension("articoding://ext/element_type", name.ToLower())
+                        .WithResultExtension("articoding://ext/element_name", boardObject.GetNameWithIndex().ToLower())
+                        .WithResultExtension("articoding://ext/old_position", lastPos.ToString())
+                        .WithResultExtension("articoding://ext/rotation", boardObject.GetDirection().ToString().ToLower())
+                        .WithResultExtension("articoding://ext/new_position", newPos.ToString())
+                        .WithResultExtension("articoding://ext/action", "move");
+                }
                 lastPos = newPos;
-
-                TrackerAsset.Instance.setVar("action", "move");
-                TrackerAsset.Instance.GameObject.Interacted(boardObject.GetID());
             }
             else
             {
                 board.RemoveBoardObject(lastPos.x, lastPos.y);
                 Destroy(gameObject, 0.3f);
 
-                TrackerAsset.Instance.setVar("action", "remove");
-                TrackerAsset.Instance.GameObject.Interacted(boardObject.GetID());
+                GameObjectTracker.Instance.Interacted(boardObject.GetID())
+                    .WithResultExtension("articoding://ext/element_type", name.ToLower())
+                    .WithResultExtension("articoding://ext/element_name", boardObject.GetNameWithIndex().ToLower())
+                    .WithResultExtension("articoding://ext/old_position", lastPos.ToString())
+                    .WithResultExtension("articoding://ext/rotation", boardObject.GetDirection().ToString().ToLower())
+                    .WithResultExtension("articoding://ext/action", "remove");
             }
         }
     }

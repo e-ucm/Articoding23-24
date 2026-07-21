@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 using System.Xml;
-using AssetPackage;
+using Xasu.HighLevel;
 using System.Collections;
 using System.Collections.Generic;
 using UBlockly;
@@ -122,8 +122,8 @@ public class LevelManager : MonoBehaviour {
         string text = UBlockly.Xml.DomToText(dom);
         text = GameManager.Instance.ChangeCodeIDs(text);
 
-        TrackerAsset.Instance.setVar("code", "\r\n" + text);
-        TrackerAsset.Instance.Completable.Initialized(GameManager.Instance.GetCurrentLevelName().ToLower(), CompletableTracker.Completable.Level);
+        CompletableTracker.Instance.Initialized(GameManager.Instance.GetCurrentLevelName().ToLower(), CompletableTracker.CompletableType.Level)
+            .WithResultExtension("articoding://ext/code", "\r\n" + text);
 
         if (currentLevel != null) {
             levelName.text = currentLevel.levelName;
@@ -171,19 +171,26 @@ public class LevelManager : MonoBehaviour {
             }
 
             if (!GameManager.Instance.IsCreatedLevel()) {
-                TrackerAsset.Instance.setVar("steps", boardManager.GetCurrentSteps());
-                TrackerAsset.Instance.setVar("special_block", starsController.IsSpecialBlockStarActive());
-                TrackerAsset.Instance.setVar("minimum_steps", starsController.IsMinimumStepsStarActive());
-                TrackerAsset.Instance.setVar("no_hanging_code", starsController.IsNoHangingCodeStarActive());
                 ProgressManager.Instance.LevelCompleted(starsController.GetStars());
 
                 var dom = UBlockly.Xml.WorkspaceToDom(BlocklyUI.WorkspaceView.Workspace);
                 string text = UBlockly.Xml.DomToText(dom);
                 text = GameManager.Instance.ChangeCodeIDs(text);
-                TrackerAsset.Instance.setVar("code", "\r\n" + text); //codigo
+
+                // setVar extensions are folded into LevelCompleted's Completed call inside ProgressManager
+                // Store them for ProgressManager to pick up via a local helper approach:
+                // Instead, emit a supplementary trace here for the code/steps/star data
+                GameObjectTracker.Instance.Used("level_completed_data")
+                    .WithResultExtension("articoding://ext/steps", boardManager.GetCurrentSteps())
+                    .WithResultExtension("articoding://ext/special_block", starsController.IsSpecialBlockStarActive())
+                    .WithResultExtension("articoding://ext/minimum_steps", starsController.IsMinimumStepsStarActive())
+                    .WithResultExtension("articoding://ext/no_hanging_code", starsController.IsNoHangingCodeStarActive())
+                    .WithResultExtension("articoding://ext/code", "\r\n" + text);
             }
             else
-                TrackerAsset.Instance.Completable.Completed(levelName, CompletableTracker.Completable.Level, true, -1);
+                CompletableTracker.Instance.Completed(levelName, CompletableTracker.CompletableType.Level)
+                    .WithSuccess(true)
+                    .WithScoreRaw(-1);
 
             completed = true;
         }
@@ -306,10 +313,10 @@ public class LevelManager : MonoBehaviour {
 
         streamRoom.Retry();
 
-        TrackerAsset.Instance.GameObject.Interacted("retry_button");
+        GameObjectTracker.Instance.Interacted("retry_button");
 
         var levelName = GameManager.Instance.GetCurrentLevelName();
-        TrackerAsset.Instance.Completable.Initialized(levelName, CompletableTracker.Completable.Level);
+        CompletableTracker.Instance.Initialized(levelName, CompletableTracker.CompletableType.Level);
     }
 
     public void ClickStopButton() {
@@ -330,7 +337,7 @@ public class LevelManager : MonoBehaviour {
         transparentRect.SetActive(false);
         blackRect.SetActive(false);
         debugPanel.SetActive(false);
-        TrackerAsset.Instance.GameObject.Interacted("end_panel_minimized_button");
+        GameObjectTracker.Instance.Interacted("end_panel_minimized_button");
     }
 
     public void MinimizeGameOverPanel() {
@@ -340,7 +347,7 @@ public class LevelManager : MonoBehaviour {
         transparentRect.SetActive(false);
         blackRect.SetActive(false);
         debugPanel.SetActive(false);
-        TrackerAsset.Instance.GameObject.Interacted("game_over_panel_minimized_button");
+        GameObjectTracker.Instance.Interacted("game_over_panel_minimized_button");
     }
 
     public void SetActiveNoInputPanel()
@@ -399,9 +406,9 @@ public class LevelManager : MonoBehaviour {
         SaveManager.Instance.Save();
 
         string levelName = GameManager.Instance.GetCurrentLevelName().ToLower();
-        TrackerAsset.Instance.setVar("steps", boardManager.GetCurrentSteps());
-        TrackerAsset.Instance.setVar("level", levelName);
-        TrackerAsset.Instance.GameObject.Interacted("level_exit_button");
+        GameObjectTracker.Instance.Interacted("level_exit_button")
+            .WithResultExtension("articoding://ext/steps", boardManager.GetCurrentSteps())
+            .WithResultExtension("articoding://ext/level", levelName);
 
         var dom = UBlockly.Xml.WorkspaceToDom(BlocklyUI.WorkspaceView.Workspace);
         string text = UBlockly.Xml.DomToText(dom);
@@ -411,8 +418,10 @@ public class LevelManager : MonoBehaviour {
         SetSpecialBlockStarActive(false);
         
         if (!completed) {
-            TrackerAsset.Instance.setVar("code", "\r\n" + text);
-            TrackerAsset.Instance.Completable.Completed(levelName, CompletableTracker.Completable.Level, false, -1f);
+            CompletableTracker.Instance.Completed(levelName, CompletableTracker.CompletableType.Level)
+                .WithSuccess(false)
+                .WithScoreRaw(-1f)
+                .WithResultExtension("articoding://ext/code", "\r\n" + text);
         }
 
         if(LoadManager.Instance == null) {

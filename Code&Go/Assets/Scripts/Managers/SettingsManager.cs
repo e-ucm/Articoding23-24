@@ -1,7 +1,7 @@
-﻿using AssetPackage;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Simva;
+using Xasu.HighLevel;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityFx.Async.Promises;
@@ -20,7 +20,7 @@ public class SettingsManager : MonoBehaviour {
 
 
     private void Start() {
-        TrackerAsset.Instance.Accessible.Accessed("menu");
+        AccessibleTracker.Instance.Accessed("menu");
 
         ResetSettingPanels();
     }
@@ -42,8 +42,8 @@ public class SettingsManager : MonoBehaviour {
         blackPanel.SetActive(true);
         settingsMenu.SetActive(!settingsMenu.activeSelf);
 
-        TrackerAsset.Instance.setVar("state", settingsMenu.activeSelf ? "opened" : "closed");
-        TrackerAsset.Instance.GameObject.Interacted("settings_button");
+        GameObjectTracker.Instance.Interacted("settings_button")
+            .WithResultExtension("articoding://ext/state", settingsMenu.activeSelf ? "opened" : "closed");
     }
 
     /// <summary>
@@ -76,9 +76,9 @@ public class SettingsManager : MonoBehaviour {
         blackPanel.SetActive(active);
 
         if (active)
-            TrackerAsset.Instance.Accessible.Accessed("options_panel", AccessibleTracker.Accessible.Screen);
+            AccessibleTracker.Instance.Accessed("options_panel", AccessibleTracker.AccessibleType.Screen);
         else
-            TrackerAsset.Instance.GameObject.Interacted("options_panel_close_button");
+            GameObjectTracker.Instance.Interacted("options_panel_close_button");
     }
 
 
@@ -91,16 +91,16 @@ public class SettingsManager : MonoBehaviour {
         blackPanel.SetActive(active);
 
         if (active)
-            TrackerAsset.Instance.Accessible.Accessed("exit_game_panel", AccessibleTracker.Accessible.Screen);
+            AccessibleTracker.Instance.Accessed("exit_game_panel", AccessibleTracker.AccessibleType.Screen);
         else
-            TrackerAsset.Instance.GameObject.Interacted("exit_game_panel_close_button");
+            GameObjectTracker.Instance.Interacted("exit_game_panel_close_button");
     }
 
     /// <summary>
     /// Change to the credits scene
     /// </summary>
     public void LoadCreditsScene() {
-        .Instance.Accessible.Accessed("credits", AccessibleTracker.Accessible.Screen);
+        AccessibleTracker.Instance.Accessed("credits", AccessibleTracker.AccessibleType.Screen);
 
         if (LoadManager.Instance == null) {
             SceneManager.LoadScene("EndScene");
@@ -113,12 +113,14 @@ public class SettingsManager : MonoBehaviour {
     public void ExitGame() {
         //GameManager.instance.Quit(); //TODO: GameManager
         bool gameCompleted = ProgressManager.Instance.GetGameProgress() == 1f;
-        TrackerAsset.Instance.Completable.Completed("articoding", CompletableTracker.Completable.Game, gameCompleted, ProgressManager.Instance.GetTotalStars());
+        CompletableTracker.Instance.Completed("articoding", CompletableTracker.CompletableType.Game)
+            .WithSuccess(gameCompleted)
+            .WithScoreRaw(ProgressManager.Instance.GetTotalStars());
 
         Simva.SimvaPlugin.Instance.WantsToQuit();
     }
 
     public void TraceEditor() {
-        TrackerAsset.Instance.Accessible.Accessed("editor_levels", AccessibleTracker.Accessible.Screen);
+        AccessibleTracker.Instance.Accessed("editor_levels", AccessibleTracker.AccessibleType.Screen);
     }
 }

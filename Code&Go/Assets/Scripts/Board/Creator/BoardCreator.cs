@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using AssetPackage;
+using Xasu.HighLevel;
 
 public class BoardCreator : MonoBehaviour
 {
@@ -41,9 +41,9 @@ public class BoardCreator : MonoBehaviour
     private void Start()
     {
         GenerateNewBoard(false);        
-        TrackerAsset.Instance.Accessible.Accessed("editor_mode");
+        AccessibleTracker.Instance.Accessed("editor_mode");
 
-        TrackerAsset.Instance.Completable.Initialized("editor_level", CompletableTracker.Completable.Level);
+        CompletableTracker.Instance.Initialized("editor_level", CompletableTracker.CompletableType.Level);
 
 
         filePath = Application.dataPath + "/Levels/LevelsCreated/";
@@ -256,11 +256,10 @@ public class BoardCreator : MonoBehaviour
 
         FitBoard();
 
-        TrackerAsset.Instance.setVar("rows", rows);
-        TrackerAsset.Instance.setVar("columns", columns);
-
         if (trace)
-            TrackerAsset.Instance.GameObject.Used("create_board_button");
+            GameObjectTracker.Instance.Used("create_board_button")
+                .WithResultExtension("articoding://ext/rows", rows)
+                .WithResultExtension("articoding://ext/columns", columns);
     }
 
     public void FitBoard()

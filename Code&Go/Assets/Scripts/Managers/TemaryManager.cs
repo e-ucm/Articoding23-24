@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Localization;
 using UnityEngine.Localization.Components;
 using UnityEngine.UI;
-using AssetPackage;
+using Xasu.HighLevel;
 
 
 public class TemaryManager : MonoBehaviour {
@@ -243,13 +243,8 @@ public class TemaryManager : MonoBehaviour {
         }
 
         // Si esta en el MainMenu
-        if(backButton == null) {
-            TrackerAsset.Instance.setVar("scene", "menu");
-        }
-        else {
-            TrackerAsset.Instance.setVar("scene", "level");
-        }
-        
-        TrackerAsset.Instance.Accessible.Accessed("tutorials_" + nameID, AccessibleTracker.Accessible.Screen);
+        string scene = backButton == null ? "menu" : "level";
+        AccessibleTracker.Instance.Accessed("tutorials_" + nameID, AccessibleTracker.AccessibleType.Screen)
+            .WithResultExtension("articoding://ext/scene", scene);
     }
 }

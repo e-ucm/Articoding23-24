@@ -4,17 +4,18 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System;
+using Newtonsoft.Json.Linq;
 
 // Comentado porque daba error de compilacion
 //using UnityEditor.PackageManager.Requests;
 
 /**
 TODO Esta es la clase que se comunica con el servidor, la he generado en un gameObject a parte porque me ha dado muchisimos problemas para ejecutar si estaba inactivo, 
-por lo que siempre la activo y luego la llamo, no se si es muy mala practica, pero es lo único que me ha funcionado.
+por lo que siempre la activo y luego la llamo, no se si es muy mala practica, pero es lo ï¿½nico que me ha funcionado.
 */
 public class ActivatedScript : MonoBehaviour {
 
-    //TODO Esto no se muy bien si estaria mejor en campos que configurara el usuario en el momento de la exportación/Importación
+    //TODO Esto no se muy bien si estaria mejor en campos que configurara el usuario en el momento de la exportaciï¿½n/Importaciï¿½n
 
     //Standard local values
     private bool serverEnable;
@@ -41,10 +42,10 @@ public class ActivatedScript : MonoBehaviour {
             contents = System.IO.File.ReadAllText(filePath);
         }
         if (!string.IsNullOrEmpty(contents)) {
-            var serverConf = SimpleJSON.JSON.Parse(contents);
-            serverEnable = bool.Parse(serverConf["serverEnable"]);
-            server = serverConf["serverIP"];
-            port = serverConf["serverPort"];
+            var serverConf = JObject.Parse(contents);
+            serverEnable = bool.Parse(serverConf["serverEnable"].ToString());
+            server = serverConf["serverIP"].ToString();
+            port = serverConf["serverPort"].ToString();
         }
         if (!serverEnable) {
             communityPageButton.gameObject.SetActive(false);

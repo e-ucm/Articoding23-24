@@ -4,7 +4,7 @@ using UnityEngine;
 using System.IO;
 using System;
 using UnityEngine.Localization;
-using AssetPackage;
+using Xasu.HighLevel;
 using UnityEditor;
 
 /// <summary>
@@ -120,16 +120,22 @@ public class ProgressManager : MonoBehaviour {
 
         // Tracks
         var levelName = GameManager.Instance.GetCurrentLevelName();
-        TrackerAsset.Instance.Completable.Completed(levelName, CompletableTracker.Completable.Level, true, starsAchieved);
+        CompletableTracker.Instance.Completed(levelName, CompletableTracker.CompletableType.Level)
+            .WithSuccess(true)
+            .WithScoreRaw(starsAchieved);
         var categoryName = categoriesDataSO[categoryIndex].name_id;
         if (currentCategoryData.GetLevelsCompleted() < currentCategoryData.levelsData.Length) {
-            TrackerAsset.Instance.Completable.Progressed(categoryName, CompletableTracker.Completable.Completable, (float)currentCategoryData.GetLevelsCompleted() / categoriesDataSO[categoryIndex].levels.Count);
+            CompletableTracker.Instance.Progressed(categoryName, CompletableTracker.CompletableType.Completable, (float)currentCategoryData.GetLevelsCompleted() / categoriesDataSO[categoryIndex].levels.Count);
         }
         else {
-            TrackerAsset.Instance.Completable.Completed(categoryName, CompletableTracker.Completable.Completable, true, GetCategoryTotalStars(categoryIndex));
+            CompletableTracker.Instance.Completed(categoryName, CompletableTracker.CompletableType.Completable)
+                .WithSuccess(true)
+                .WithScoreRaw(GetCategoryTotalStars(categoryIndex));
         }
         if (GetGameProgress() == 1.0f) {
-            TrackerAsset.Instance.Completable.Completed("articoding", CompletableTracker.Completable.Game, true, GetTotalStars());
+            CompletableTracker.Instance.Completed("articoding", CompletableTracker.CompletableType.Game)
+                .WithSuccess(true)
+                .WithScoreRaw(GetTotalStars());
         }
     }
     #endregion
@@ -144,18 +150,18 @@ public class ProgressManager : MonoBehaviour {
 
         if (levelIndex == 0 && !currentCategoryData.completableInitialized) {
             var categoryName = categoriesDataSO[categoryIndex].name_id;
-            TrackerAsset.Instance.Completable.Initialized(categoryName, CompletableTracker.Completable.Completable);
+            CompletableTracker.Instance.Initialized(categoryName, CompletableTracker.CompletableType.Completable);
             currentCategoryData.completableInitialized = true;
         }
 
         var levelName = GameManager.Instance.GetCurrentLevelName();
-        TrackerAsset.Instance.Accessible.Accessed(levelName);
+        AccessibleTracker.Instance.Accessed(levelName);
     }
 
     public void LevelStarted(CategoryDataSO category, int level) {
         int index = category.index;
         if (index < 0)
-            TrackerAsset.Instance.Accessible.Accessed(levelsCreatedCategory.levels[level].levelName);
+            AccessibleTracker.Instance.Accessed(levelsCreatedCategory.levels[level].levelName);
         else {
             LevelStarted(category.index, level);
         }

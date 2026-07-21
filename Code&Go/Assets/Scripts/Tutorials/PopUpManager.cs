@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Localization;
-using AssetPackage;
+using Xasu.HighLevel;
 
 public class PopUpManager : MonoBehaviour {
     private static PopUpManager instance;
@@ -78,14 +78,14 @@ public class PopUpManager : MonoBehaviour {
 
     private void TraceShow(PopUpData data) {
         string content = data.localizedTitle.GetLocalizedStringAsync().Result + ": " + data.localizedContent.GetLocalizedStringAsync().Result;
-        TrackerAsset.Instance.setVar("content", content.Replace("\"", "'"));
-        TrackerAsset.Instance.Completable.Initialized("tip_" + data.name.ToLower(), CompletableTracker.Completable.DialogFragment);
+        CompletableTracker.Instance.Initialized("tip_" + data.name.ToLower(), CompletableTracker.CompletableType.DialogFragment)
+            .WithResultExtension("articoding://ext/content", content.Replace("\"", "'"));
     }
 
     private void TraceHide(PopUpData data) {
         string content = data.localizedTitle.GetLocalizedStringAsync().Result + ": " + data.localizedContent.GetLocalizedStringAsync().Result;
-        TrackerAsset.Instance.setVar("content", content.Replace("\"", "'"));
-        TrackerAsset.Instance.Completable.Completed("tip_" + data.name.ToLower(), CompletableTracker.Completable.DialogFragment);
+        CompletableTracker.Instance.Completed("tip_" + data.name.ToLower(), CompletableTracker.CompletableType.DialogFragment)
+            .WithResultExtension("articoding://ext/content", content.Replace("\"", "'"));
     }
 
     public void Hide() {

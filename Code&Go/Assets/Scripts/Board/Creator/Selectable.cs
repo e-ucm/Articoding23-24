@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using AssetPackage;
-using Simva.Api;
+using Xasu.HighLevel;
 
 public class Selectable : MonoBehaviour, IMouseListener
 {
@@ -41,10 +40,10 @@ public class Selectable : MonoBehaviour, IMouseListener
         draggable.SetOrbitCamera(board.GetOrbitCamera());
 
         string name = boardObject.GetName();
-        TrackerAsset.Instance.setVar("element_type", name.ToLower());
-        TrackerAsset.Instance.setVar("element_name", boardObject.GetNameWithIndex().ToLower());
-        TrackerAsset.Instance.setVar("action", "create");
-        TrackerAsset.Instance.GameObject.Interacted(boardObject.GetID());
+        GameObjectTracker.Instance.Interacted(boardObject.GetID())
+            .WithResultExtension("articoding://ext/element_type", name.ToLower())
+            .WithResultExtension("articoding://ext/element_name", boardObject.GetNameWithIndex().ToLower())
+            .WithResultExtension("articoding://ext/action", "create");
 
         draggable.OnMouseButtonDown(index);
     }
