@@ -397,17 +397,9 @@ public class ProgressManager : MonoBehaviour {
 
     public float GetGameProgress()
     {
-        int levels = 0;
-        int totalLevel = 0;
-
-        //foreach (CategoryDataSO c in categories)
-        //{
-        //    int tmp = GetCategoryCurrentProgress(c);
-        //    levels += Mathf.Max(0, tmp);
-        //    totalLevel += c.levels.Count;
-        //}
-
-        return levels / (float)totalLevel;
+        int totalLevels = GetTotalLevels();
+        if (totalLevels == 0) return 0f;
+        return (float)GetTotalLevelsComplete() / totalLevels;
     }
 
     //public int GetTotalStars()
