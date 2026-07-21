@@ -17,7 +17,7 @@ limitations under the License.
 ****************************************************************************/
 
 
-using AssetPackage; //articoding
+using Xasu.HighLevel; //articoding
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -413,57 +413,74 @@ namespace UBlockly.UGUI
             }
 
             //articoding
-            TrackerAsset.Instance.setVar("level", GameManager.Instance.GetCurrentLevelName().ToLower());
+            string level = GameManager.Instance.GetCurrentLevelName().ToLower();
 
             if (parentBlock != null)
             {
-                TrackerAsset.Instance.setVar("other_block", GameManager.Instance.GetBlockId(parentBlock));
-                TrackerAsset.Instance.setVar("other_block_type", parentBlock.Type);
-            }
+                string otherBlockId = GameManager.Instance.GetBlockId(parentBlock);
+                string otherBlockType = parentBlock.Type;
 
-            if (parentWasEmpty && parentBlock == null)
-            {
-                TrackerAsset.Instance.setVar("block_type", childBlock.Type);
-                TrackerAsset.Instance.setVar("coords", childBlock.XY.ToString());
-                TrackerAsset.Instance.setVar("action", "move");
-                TrackerAsset.Instance.GameObject.Interacted(GameManager.Instance.GetBlockId(childBlock));
-            }
-            else if (mClosestConnection != null && mClosestConnection.Type == Define.EConnection.PrevStatement)
-            {
-                TrackerAsset.Instance.setVar("block_type", childBlock.Type);
-                TrackerAsset.Instance.setVar("action", "attach_to_top");
-                TrackerAsset.Instance.GameObject.Interacted(GameManager.Instance.GetBlockId(childBlock));
-                //Debug.Log("Setting block " + childBlock.ToDevString() + " child to " + (parentBlock == null ? "empty at coords. " + childBlock.XY.ToString() : parentBlock.ToDevString()) + (input != null ? " at input " + input.Name : ""));
-            }
-            else
-            {
-                TrackerAsset.Instance.setVar("block_type", childBlock.Type);
-
-                if (input != null)
+                if (parentWasEmpty && parentBlock == null)
                 {
-                    TrackerAsset.Instance.setVar("action", "attach_to_input");
-                    TrackerAsset.Instance.setVar("input_name", input.Name);
-
+                    GameObjectTracker.Instance.Interacted(GameManager.Instance.GetBlockId(childBlock))
+                        .WithResultExtension("articoding://ext/level", level)
+                        .WithResultExtension("articoding://ext/block_type", childBlock.Type)
+                        .WithResultExtension("articoding://ext/coords", childBlock.XY.ToString())
+                        .WithResultExtension("articoding://ext/action", "move");
                 }
-                else if (parentBlock != null)
+                else if (mClosestConnection != null && mClosestConnection.Type == Define.EConnection.PrevStatement)
                 {
-                    TrackerAsset.Instance.setVar("action", "attach_to_bottom");
+                    GameObjectTracker.Instance.Interacted(GameManager.Instance.GetBlockId(childBlock))
+                        .WithResultExtension("articoding://ext/level", level)
+                        .WithResultExtension("articoding://ext/other_block", otherBlockId)
+                        .WithResultExtension("articoding://ext/other_block_type", otherBlockType)
+                        .WithResultExtension("articoding://ext/block_type", childBlock.Type)
+                        .WithResultExtension("articoding://ext/action", "attach_to_top");
                 }
                 else
                 {
-                    TrackerAsset.Instance.setVar("action", "dettach");
+                    string action;
+                    var promise = GameObjectTracker.Instance.Interacted(GameManager.Instance.GetBlockId(childBlock))
+                        .WithResultExtension("articoding://ext/level", level)
+                        .WithResultExtension("articoding://ext/other_block", otherBlockId)
+                        .WithResultExtension("articoding://ext/other_block_type", otherBlockType)
+                        .WithResultExtension("articoding://ext/block_type", childBlock.Type);
+                    if (input != null)
+                    {
+                        promise.WithResultExtension("articoding://ext/action", "attach_to_input")
+                               .WithResultExtension("articoding://ext/input_name", input.Name);
+                    }
+                    else
+                    {
+                        promise.WithResultExtension("articoding://ext/action", "attach_to_bottom");
+                    }
                 }
-
-                TrackerAsset.Instance.GameObject.Interacted(GameManager.Instance.GetBlockId(childBlock));
-                //Debug.Log("Setting block " + childBlock.ToDevString() + " parent to " + (parentBlock == null ? "empty at coords. " + childBlock.XY.ToString() : parentBlock.ToDevString()) + (input != null ? " at input " + input.Name : ""));
+            }
+            else
+            {
+                if (parentWasEmpty)
+                {
+                    GameObjectTracker.Instance.Interacted(GameManager.Instance.GetBlockId(childBlock))
+                        .WithResultExtension("articoding://ext/level", level)
+                        .WithResultExtension("articoding://ext/block_type", childBlock.Type)
+                        .WithResultExtension("articoding://ext/coords", childBlock.XY.ToString())
+                        .WithResultExtension("articoding://ext/action", "move");
+                }
+                else
+                {
+                    GameObjectTracker.Instance.Interacted(GameManager.Instance.GetBlockId(childBlock))
+                        .WithResultExtension("articoding://ext/level", level)
+                        .WithResultExtension("articoding://ext/block_type", childBlock.Type)
+                        .WithResultExtension("articoding://ext/action", "dettach");
+                }
             }
 
             if (BlocklyUI.WorkspaceView.Toolbox.CheckBin(this))
             {
-                TrackerAsset.Instance.setVar("block_type", Block.Type);
-                TrackerAsset.Instance.setVar("action", "remove");
-                TrackerAsset.Instance.GameObject.Interacted(GameManager.Instance.GetBlockId(Block));
-                TrackerAsset.Instance.Accessible.Accessed("", AccessibleTracker.Accessible.Screen);
+                GameObjectTracker.Instance.Interacted(GameManager.Instance.GetBlockId(Block))
+                    .WithResultExtension("articoding://ext/block_type", Block.Type)
+                    .WithResultExtension("articoding://ext/action", "remove");
+                AccessibleTracker.Instance.Accessed("", AccessibleTracker.AccessibleType.Screen);
             }
             //articoding
 
@@ -480,20 +497,20 @@ namespace UBlockly.UGUI
             {
                 BlockView newBlock = BlocklyUI.WorkspaceView.CloneBlockView(this, XY + BlockViewSettings.Get().BumpAwayOffset);
                 newBlock.InitIDs();
-                TrackerAsset.Instance.setVar("block_type", Block.Type);
-                TrackerAsset.Instance.setVar("action", "duplicate");
-                TrackerAsset.Instance.setVar("new_block_id", GameManager.Instance.GetBlockId(newBlock.Block));
-                TrackerAsset.Instance.GameObject.Interacted(GameManager.Instance.GetBlockId(Block));
 
-                TrackerAsset.Instance.setVar("block_type", Block.Type);
-                TrackerAsset.Instance.setVar("action", "create_clone");
+                GameObjectTracker.Instance.Interacted(GameManager.Instance.GetBlockId(Block))
+                    .WithResultExtension("articoding://ext/block_type", Block.Type)
+                    .WithResultExtension("articoding://ext/action", "duplicate")
+                    .WithResultExtension("articoding://ext/new_block_id", GameManager.Instance.GetBlockId(newBlock.Block));
 
                 XmlNode dom = Xml.BlockToDomWithXY(newBlock.Block, false);
                 string text = UBlockly.Xml.DomToText(dom);
                 text = GameManager.Instance.ChangeCodeIDs(text);
 
-                TrackerAsset.Instance.setVar("code", "\r\n" + text);
-                TrackerAsset.Instance.GameObject.Interacted(GameManager.Instance.GetBlockId(newBlock.Block));
+                GameObjectTracker.Instance.Interacted(GameManager.Instance.GetBlockId(newBlock.Block))
+                    .WithResultExtension("articoding://ext/block_type", Block.Type)
+                    .WithResultExtension("articoding://ext/action", "create_clone")
+                    .WithResultExtension("articoding://ext/code", "\r\n" + text);
             }
         }
         

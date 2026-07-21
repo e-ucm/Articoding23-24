@@ -20,7 +20,7 @@ limitations under the License.
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-using AssetPackage;
+using Xasu.HighLevel;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
 
@@ -343,11 +343,11 @@ namespace UBlockly
                 }
             }
 
-            TrackerAsset.Instance.setVar("variable_name", name);
-            TrackerAsset.Instance.setVar("block_type", "variable");
-            TrackerAsset.Instance.setVar("action", "delete");
-            TrackerAsset.Instance.setVar("level", GameManager.Instance.GetCurrentLevelName().ToLower());
-            TrackerAsset.Instance.GameObject.Interacted("delete_variable");
+            GameObjectTracker.Instance.Interacted("delete_variable")
+                .WithResultExtension("articoding://ext/variable_name", name)
+                .WithResultExtension("articoding://ext/block_type", "variable")
+                .WithResultExtension("articoding://ext/action", "delete")
+                .WithResultExtension("articoding://ext/level", GameManager.Instance.GetCurrentLevelName().ToLower());
 
             var workspace = this;
             var variable = workspace.GetVariable(name);
@@ -393,9 +393,9 @@ namespace UBlockly
             var uses = GetVariableUses(variable.Name);
             foreach (var block in uses)
             {
-                TrackerAsset.Instance.setVar("block_type", block.Type);
-                TrackerAsset.Instance.setVar("action", "remove");
-                TrackerAsset.Instance.GameObject.Interacted(GameManager.Instance.GetBlockId(block));
+                GameObjectTracker.Instance.Interacted(GameManager.Instance.GetBlockId(block))
+                    .WithResultExtension("articoding://ext/block_type", block.Type)
+                    .WithResultExtension("articoding://ext/action", "remove");
 
                 block.Dispose(true);
             }
