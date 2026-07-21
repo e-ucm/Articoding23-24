@@ -271,7 +271,7 @@ MonoBehaviour:
   LanguageByDefault: English (UK) [en_UK]
   AutoStart: 1
   StartScene: LoginScene
-  GamePlayScene: LoadingScene
+  GamePlayScene: MenuScene
   SaveDisclaimerAccepted: 0
   EnableDebugLogging: 1
 --- !u!4 &444729311
