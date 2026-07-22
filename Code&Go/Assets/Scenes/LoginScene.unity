@@ -246,6 +246,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AutoStart: 0
   EnableDebugLogging: 1
+  CanLoadConfigFromURL: 1
   processingLoopTime: 1
 --- !u!114 &444729310
 MonoBehaviour:
@@ -271,7 +272,7 @@ MonoBehaviour:
   LanguageByDefault: English (UK) [en_UK]
   AutoStart: 1
   StartScene: LoginScene
-  GamePlayScene: MenuScene
+  GamePlayScene: LoadingScene
   SaveDisclaimerAccepted: 0
   EnableDebugLogging: 1
 --- !u!4 &444729311

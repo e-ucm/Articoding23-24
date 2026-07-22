@@ -28,7 +28,7 @@ public class LoadManager : MonoBehaviour {
     [SerializeField] private float extraLoadingTime = 1.0f;
 
     private List<AsyncOperation> loadOperations = new List<AsyncOperation>();
-    private int lastLoadedIndex = -1;
+    private string lastLoadedSceneName = null;
     #endregion
 
     #region Methods
@@ -45,12 +45,15 @@ public class LoadManager : MonoBehaviour {
 
     private IEnumerator Start() {
         yield return WaitUntilLoadingIsComplete();
-        if (autoStart && lastLoadedIndex == -1)
+        if (autoStart && string.IsNullOrEmpty(lastLoadedSceneName))
         {
             int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;
-            Scene nextScene = SceneManager.GetSceneByBuildIndex(nextIndex);
-            if (!nextScene.IsValid() || !nextScene.isLoaded)
-                LoadScene(nextIndex);
+            string nextScenePath = SceneUtility.GetScenePathByBuildIndex(nextIndex);
+            if (!string.IsNullOrEmpty(nextScenePath))
+            {
+                string nextSceneName = System.IO.Path.GetFileNameWithoutExtension(nextScenePath);
+                LoadScene(nextSceneName);
+            }
         }
     }
 
@@ -66,12 +69,12 @@ public class LoadManager : MonoBehaviour {
         loadingCanvas.SetActive(true);
 
         // Unload current Scene
-        if (lastLoadedIndex != -1)
-            loadOperations.Add(SceneManager.UnloadSceneAsync(lastLoadedIndex));
+        if (!string.IsNullOrEmpty(lastLoadedSceneName))
+            loadOperations.Add(SceneManager.UnloadSceneAsync(lastLoadedSceneName));
 
         yield return StartCoroutine(WaitUntilLoadingIsComplete());
 
-        lastLoadedIndex = -1;
+        lastLoadedSceneName = null;
     }
 
     public void LoadScene(string sceneName) {
@@ -80,15 +83,15 @@ public class LoadManager : MonoBehaviour {
         loadingCanvas.SetActive(true);
 
         // Unload current Scene
-        if (lastLoadedIndex != -1)
-            loadOperations.Add(SceneManager.UnloadSceneAsync(lastLoadedIndex));
+        if (!string.IsNullOrEmpty(lastLoadedSceneName))
+            loadOperations.Add(SceneManager.UnloadSceneAsync(lastLoadedSceneName));
 
         // Load async 
         loadOperations.Add(SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive));
 
         StartCoroutine(WaitUntilLoadingIsComplete());
 
-        lastLoadedIndex = SceneManager.GetSceneByName(sceneName).buildIndex;
+        lastLoadedSceneName = sceneName;
     }
 
     public void LoadScene(int index) {
@@ -97,15 +100,16 @@ public class LoadManager : MonoBehaviour {
         loadingCanvas.SetActive(true);
 
         // Unload current Scene
-        if (lastLoadedIndex != -1)
-            loadOperations.Add(SceneManager.UnloadSceneAsync(lastLoadedIndex));
+        if (!string.IsNullOrEmpty(lastLoadedSceneName))
+            loadOperations.Add(SceneManager.UnloadSceneAsync(lastLoadedSceneName));
 
         // Load async 
         loadOperations.Add(SceneManager.LoadSceneAsync(index, LoadSceneMode.Additive));
 
         StartCoroutine(WaitUntilLoadingIsComplete());
 
-        lastLoadedIndex = index;
+        string path = SceneUtility.GetScenePathByBuildIndex(index);
+        lastLoadedSceneName = System.IO.Path.GetFileNameWithoutExtension(path);
     }
 
     private IEnumerator WaitUntilLoadingIsComplete() {
