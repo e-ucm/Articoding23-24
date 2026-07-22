@@ -697,9 +697,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5280456212475383824}
   - component: {fileID: 1687294561}
-  - component: {fileID: 3491904409082963779}
-  - component: {fileID: 5280456212475383825}
-  - component: {fileID: 5280456212475383826}
   m_Layer: 0
   m_Name: Loading Manager
   m_TagString: Untagged
@@ -1967,18 +1964,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &3491904409082963779
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1687294556}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c82b198620948c64d80ee85febd79580, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &3555483716675769925
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2611,48 +2596,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5280456212475383825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1687294556}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5422c383d1620b4c90087ce509c1f55, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SaveAuthUntilCompleted: 0
-  ShowLoginOnStartup: 1
-  RunGameIfSimvaIsNotConfigured: 1
-  ContinueOnQuit: 1
-  EnableLoginDemoButton: 0
-  EnableLanguageScene: 1
-  SelectedLanguages:
-  - "Espa\xF1ol (ES) [es_ES]"
-  - English (UK) [en_UK]
-  LanguageByDefault: English (UK) [en_UK]
-  AutoStart: 1
-  StartScene: 
-  GamePlayScene: Main Menu
-  SaveDisclaimerAccepted: 0
-  EnableDebugLogging: 1
---- !u!114 &5280456212475383826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1687294556}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce9251e9e3ed36f4eb38a5089a747a25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  AutoStart: 0
-  EnableDebugLogging: 1
-  processingLoopTime: 1
 --- !u!4 &5331999514142872749
 Transform:
   m_ObjectHideFlags: 0
