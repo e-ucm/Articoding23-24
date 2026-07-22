@@ -5,6 +5,7 @@ using Xasu.HighLevel;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityFx.Async.Promises;
+using Xasu;
 
 /// <summary>
 /// Manage the functions of the settings and its buttons
@@ -111,13 +112,26 @@ public class SettingsManager : MonoBehaviour {
     }
 
     public void ExitGame() {
-        //GameManager.instance.Quit(); //TODO: GameManager
         bool gameCompleted = ProgressManager.Instance.GetGameProgress() == 1f;
-        CompletableTracker.Instance.Completed("articoding", CompletableTracker.CompletableType.Game)
-            .WithSuccess(gameCompleted)
-            .WithScoreRaw(ProgressManager.Instance.GetTotalStars());
+        if (CompletableTracker.IsInitialized("articoding"))
+        {
+            CompletableTracker.Instance.Completed("articoding", CompletableTracker.CompletableType.Game)
+                .WithSuccess(gameCompleted)
+                .WithScoreRaw(ProgressManager.Instance.GetTotalStars());
+        }
 
-        Simva.SimvaPlugin.Instance.WantsToQuit();
+        if (SimvaManager.Instance != null && SimvaManager.Instance.IsActive)
+        {
+            Simva.SimvaPlugin.Instance.WantsToQuit();
+        }
+        else
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+            Application.Quit();
+#endif
+        }
     }
 
     public void TraceEditor() {

@@ -45,6 +45,13 @@ public class LoadManager : MonoBehaviour {
 
     private IEnumerator Start() {
         yield return WaitUntilLoadingIsComplete();
+
+        if (GameManager.Instance == null)
+        {
+            GameObject gm = new GameObject("GameManager");
+            gm.AddComponent<GameManager>();
+        }
+
         if (autoStart && string.IsNullOrEmpty(lastLoadedSceneName))
         {
             int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;

@@ -21,11 +21,10 @@ MonoBehaviour:
     m_Address: Assets/Art/Sprites/UI/shopIcon.png
     m_ReadOnly: 0
     m_SerializedLabels: []
-    m_MainAsset: {fileID: 0}
-    m_TargetAsset: {fileID: 0}
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: fcd72a3575af0a34e932bbaab802abd7, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: db5f7fc3e07c9124492be13669145a50, type: 2}
     - {fileID: 11400000, guid: ac674bbe6f9ef8245a5f0cc5b0a1f643, type: 2}
+    - {fileID: 11400000, guid: db5f7fc3e07c9124492be13669145a50, type: 2}
