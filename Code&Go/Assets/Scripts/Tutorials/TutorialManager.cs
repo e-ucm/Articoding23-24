@@ -19,11 +19,11 @@ public class TutorialManager : MonoBehaviour {
 
     [SerializeField] private PopUpManager popUpManager;
 
-    private BinaryHeap<TutorialTrigger> priorTriggers = null;
-    private List<TutorialTrigger> conditionTriggers = null;
-    private HashSet<string> triggered = null;   // Stores the hash of all triggered tutorial
-    private List<TutorialTrigger> savePending;  // Stores the pending triggers to be saved
-    private HashSet<string> saved = null;       // Stores save data, loaded from file or modified on execution
+    private BinaryHeap<TutorialTrigger> priorTriggers = new BinaryHeap<TutorialTrigger>();
+    private List<TutorialTrigger> conditionTriggers = new List<TutorialTrigger>();
+    private HashSet<string> triggered = new HashSet<string>();   // Stores the hash of all triggered tutorial
+    private List<TutorialTrigger> savePending = new List<TutorialTrigger>();  // Stores the pending triggers to be saved
+    private HashSet<string> saved = new HashSet<string>();       // Stores save data, loaded from file or modified on execution
 
     private bool needToBeDestroyed = false;
     private float lastWidth;
@@ -37,21 +37,12 @@ public class TutorialManager : MonoBehaviour {
         if (!instance) {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            Init();
         }
         else {
             Debug.LogWarning("More than 1 Tutorial Manager created");
             DestroyImmediate(gameObject);
         }
         Debug.Log("Tutorial Manager Awake Finished");
-    }
-
-    private void Init() {
-        priorTriggers = new BinaryHeap<TutorialTrigger>();
-        conditionTriggers = new List<TutorialTrigger>();
-        triggered = new HashSet<string>();
-        savePending = new List<TutorialTrigger>();
-        saved = new HashSet<string>();
     }
 
     private void Update() {

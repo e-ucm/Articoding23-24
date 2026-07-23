@@ -98,8 +98,13 @@ public class GameManager : MonoBehaviour {
         }
         else {
             Debug.LogWarning("More than 1 Game Manager created");
+            if (categories != null && categories.Length > 0)
+                instance.categories = categories;
             DestroyImmediate(gameObject);
         }
+
+        if (instance.categories != null)
+            System.Array.Sort(instance.categories, (a, b) => a.index.CompareTo(b.index));
 
         Debug.Log("Game Manager Awake Finished");
     }
@@ -133,6 +138,18 @@ public class GameManager : MonoBehaviour {
     /// Load an offline level
     /// </summary>
     public void LoadLevel(CategoryDataSO category, int levelIndex) {
+        if (category == null) {
+            Debug.LogError("LoadLevel failed: category is null");
+            return;
+        }
+        if (categories == null) {
+            Debug.LogError("LoadLevel failed: categories array is null in GameManager");
+            return;
+        }
+        if (category.index < 0 || category.index >= categories.Length || categories[category.index] != category) {
+            Debug.LogError("LoadLevel failed: category index " + category.index + " does not match categories array");
+            return;
+        }
         LoadLevel(category.index, levelIndex);
     }
 
@@ -145,6 +162,11 @@ public class GameManager : MonoBehaviour {
         playingCommunityLevel = false;
         currentCategoryIndex = categoryIndex;
         currentLevelIndex = levelIndex;
+
+        if (categories == null || categoryIndex < 0 || categoryIndex >= categories.Length || categories[categoryIndex] == null) {
+            Debug.LogError("LoadLevel failed: categories array is null or categoryIndex " + categoryIndex + " is out of range");
+            return;
+        }
 
         ProgressManager.Instance.LevelStarted(categories[currentCategoryIndex], currentLevelIndex);
 

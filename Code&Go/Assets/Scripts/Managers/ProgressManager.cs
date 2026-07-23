@@ -57,12 +57,24 @@ public class ProgressManager : MonoBehaviour {
         }
         else {
             Debug.LogWarning("More than 1 Progress Manager created");
+            if ((instance.categoriesData == null || instance.categoriesData.Length == 0)
+                && categoriesDataSO != null && categoriesDataSO.Length > 0)
+            {
+                instance.categoriesDataSO = categoriesDataSO;
+                instance.Init();
+            }
             DestroyImmediate(this);
         }
         Debug.Log("Progress Manager Awake Finished");
     }
 
     private void Init() {
+        if (categoriesDataSO == null || categoriesDataSO.Length == 0)
+        {
+            categoriesData = new CategorySaveData[0];
+            return;
+        }
+        System.Array.Sort(categoriesDataSO, (a, b) => a.index.CompareTo(b.index));
         categoriesData = new CategorySaveData[categoriesDataSO.Length];
 
         int i = 0;
@@ -80,8 +92,9 @@ public class ProgressManager : MonoBehaviour {
             i++;
         }
 
-        // Unlock the first level
-        categoriesData[1].levelsData[0] = 0;
+        // Unlock the first level of the first playable category (skip tutorial at index 0)
+        if (categoriesData.Length > 1)
+            categoriesData[1].levelsData[0] = 0;
 
         // Created Levels
         levelsCreated = new LevelsCreatedSaveData();
