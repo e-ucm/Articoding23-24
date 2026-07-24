@@ -80,21 +80,26 @@ public class SaveManager : MonoBehaviour {
         // Create the data from the json
         SaveData data = JsonUtility.FromJson<SaveData>(readerData);
 
-        // Delete this if
-        //if (checkHash) {
-        //    // Check the hash TODO active
-        //    if (Hash.ToHash(data.gameData.ToString(), "") == data.hash) {
+        if (data?.gameData?.progressData != null && data?.gameData?.tutorialInfo != null)
+        {
+            if (Hash.ToHash(JsonUtility.ToJson(data.gameData), "") == data.hash)
+            {
                 Debug.Log("Hash coincidente");
                 ProgressManager.Instance.Load(data.gameData.progressData);
                 Debug.Log("Progress data loaded");
                 TutorialManager.Instance.Load(data.gameData.tutorialInfo);
                 Debug.Log("Tutorial data loaded");
-        //    }
-        //    else Debug.LogWarning("Hash NO coincidente");
-        //}
+            }
+            else
+            {
+                Debug.LogWarning("Hash NO coincidente - save file may be corrupted");
+            }
+        }
+        else
+        {
+            Debug.LogError("Save file is corrupted or empty, starting from defaults");
+        }
 
-        // Se ha modificado el archivo, empiezas de 0
-        Save();
     }
 
     public void Save() {
@@ -103,13 +108,14 @@ public class SaveManager : MonoBehaviour {
         // Save the game data
         GameSaveData gameData = new GameSaveData();
         gameData.progressData = ProgressManager.Instance.Save();
-        gameData.tutorialInfo = TutorialManager.Instance.Save();
+        if (TutorialManager.Instance != null)
+            gameData.tutorialInfo = TutorialManager.Instance.Save();
         Debug.Log("Total tutoriales saved: " + gameData.tutorialInfo.tutorials.Length);
         
         // Add the hash to the save data
         SaveData data = new SaveData();
         data.gameData = gameData;
-        data.hash = Hash.ToHash(data.gameData.ToString(), "");
+        data.hash = Hash.ToHash(JsonUtility.ToJson(data.gameData), "");
 
         // Parse to json
         string finalJson = JsonUtility.ToJson(data);

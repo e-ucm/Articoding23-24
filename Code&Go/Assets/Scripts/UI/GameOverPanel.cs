@@ -15,7 +15,7 @@ public class GameOverPanel : MonoBehaviour
     private int _languageCode;
     private void Awake()
     {
-        if (LocalizationSettings.SelectedLocale.Identifier.Code == "en") _languageCode = 0; //English
+        if (LocalizationSettings.SelectedLocale != null && LocalizationSettings.SelectedLocale.Identifier.Code == "en") _languageCode = 0; //English
         else _languageCode = 1; //Espanol
     }
 

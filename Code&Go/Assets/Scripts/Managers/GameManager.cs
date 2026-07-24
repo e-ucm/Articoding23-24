@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour {
     }
 
     [SerializeField] private CategoryDataSO[] categories;
-    [SerializeField] private bool tryToLoadSave;
+    [SerializeField] private bool tryToLoadSave = true;
 
     private int currentCategoryIndex;
     public int CurrentCategoryIndex {
@@ -114,14 +114,34 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     private void Start() {
         Debug.Log("Game Manager Start");
-        LoadGame();
 
+        if (SaveManager.Instance != null && ProgressManager.Instance != null)
+            LoadGame();
+        else if (tryToLoadSave)
+            StartCoroutine(DelayedLoadGame());
+
+        string languageCode = LocalizationSettings.SelectedLocale != null ? LocalizationSettings.SelectedLocale.Identifier.Code : "unknown";
         CompletableTracker.Instance.Initialized("articoding", CompletableTracker.CompletableType.Game)
-            .WithResultExtension("articoding://ext/language", LocalizationSettings.SelectedLocale.Identifier.Code)
+            .WithResultExtension("articoding://ext/language", languageCode)
             .WithResultExtension("articoding://ext/resolution", Screen.currentResolution.ToString())
             .WithResultExtension("articoding://ext/fullscreen", Screen.fullScreen);
-        CompletableTracker.Instance.Progressed("articoding", CompletableTracker.CompletableType.Game, ProgressManager.Instance.GetGameProgress());
+        if (ProgressManager.Instance != null)
+            CompletableTracker.Instance.Progressed("articoding", CompletableTracker.CompletableType.Game, ProgressManager.Instance.GetGameProgress());
         Debug.Log("Game Manager Start Finished");
+    }
+
+    private System.Collections.IEnumerator DelayedLoadGame() {
+        while (SaveManager.Instance == null || ProgressManager.Instance == null)
+            yield return null;
+        LoadGame();
+
+        // Refresh UI after loading save data
+        var cards = FindObjectsOfType<CategoryCard>();
+        foreach (var card in cards)
+            card.Configure();
+        var profile = FindObjectOfType<ProfileManager>();
+        if (profile != null)
+            profile.UpdateUI();
     }
 
     /// <summary>
@@ -218,11 +238,8 @@ public class GameManager : MonoBehaviour {
         LoadManager.Instance.LoadScene(name);
     }
 
-    /// <summary>
-    /// Save the game when is going to close
-    /// </summary>
     public void OnDestroy() {
-        if (Instance && tryToLoadSave && SaveManager.Instance)
+        if (this == Instance && tryToLoadSave && SaveManager.Instance)
             SaveManager.Instance.Save();
     }
 

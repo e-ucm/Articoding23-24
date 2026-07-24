@@ -50,6 +50,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3cd880f8f74a1a849b532c2b369cb9cc, type: 2}
   - {fileID: 11400000, guid: d8e0fa3ec83da554c8d7cc0e28d9bb4e, type: 2}
   - {fileID: 11400000, guid: f97e110c31f39254bafe499d9cd34038, type: 2}
-  loadSave: 1
+  tryToLoadSave: 1
   category: {fileID: 11400000, guid: e88a57daea5a5d84d97ee1e74d54d8a9, type: 2}
   levelIndex: 0

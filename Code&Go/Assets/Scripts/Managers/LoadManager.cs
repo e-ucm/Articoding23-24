@@ -130,10 +130,18 @@ public class LoadManager : MonoBehaviour {
         }
         loadOperations.Clear();
 
-        // Wait for localization operations
-        while (!LocalizationSettings.InitializationOperation.IsDone)
+        float timeout = Time.realtimeSinceStartup + 10f;
+        while (!LocalizationSettings.InitializationOperation.IsDone && Time.realtimeSinceStartup < timeout)
         {
             yield return null;
+        }
+        if (!LocalizationSettings.InitializationOperation.IsDone)
+        {
+            Debug.LogWarning("Localization initialization timed out, continuing without it");
+        }
+        else if (LocalizationSettings.InitializationOperation.Status == UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationStatus.Failed)
+        {
+            Debug.LogWarning("Localization initialization failed: " + LocalizationSettings.InitializationOperation.OperationException?.Message);
         }
 
         yield return new WaitForSeconds(extraLoadingTime);

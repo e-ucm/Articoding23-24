@@ -53,8 +53,9 @@ public class OptionsManager : MonoBehaviour
     {
         LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
 
+        string code = LocalizationSettings.SelectedLocale != null ? LocalizationSettings.SelectedLocale.Identifier.Code : "unknown";
         GameObjectTracker.Instance.Interacted("language_dropdown")
-            .WithResultExtension("articoding://ext/language", LocalizationSettings.SelectedLocale.Identifier.Code);
+            .WithResultExtension("articoding://ext/language", code);
     }
 
     public void OnResolutionDropdownUsed()
