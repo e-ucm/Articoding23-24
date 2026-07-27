@@ -48,27 +48,6 @@ public class SettingsManager : MonoBehaviour {
     }
 
     /// <summary>
-    /// Post-Test Button function. Opens the test URL.
-    /// </summary>
-    public void GoToPostSurvey() {
-        //Simva.SimvaPlugin.Instance.Instance.NotifyLoading(true);
-        string activityId = Simva.SimvaManager.Instance.CurrentActivityId;
-        Simva.Model.Schedule schedule = Simva.SimvaManager.Instance.Schedule;
-        var dic = schedule.Activities;
-        string username = Simva.SimvaManager.Instance.API.Authorization.Agent.account.name;
-
-        foreach (var activity in dic.Values) {
-            if (activity.Type == "limesurvey" && activity.Name.ToLower().Contains("post")) {
-                activityId = activity.Id;
-            }
-        }
-
-        Simva.SimvaManager.Instance.API.Api.GetActivityTarget(activityId).Then(
-            result => { Application.OpenURL(result[username]); });
-    }
-
-
-    /// <summary>
     /// Active or deactive the options panel
     /// </summary>
     /// <param name="active"></param>
