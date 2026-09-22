@@ -23,6 +23,7 @@ MonoBehaviour:
         m_KeyId: 17667588096
         m_Key: 
       m_FallbackState: 0
+      m_WaitForCompletion: 0
   m_I18nFiles:
   - IndexName: en
     ResName: en
@@ -299,7 +300,7 @@ MonoBehaviour:
     Prefab: {fileID: 1888033037372908, guid: cbe6a830a9c15491eb42457c49f16a18, type: 3}
   - IndexName: lists_create_with_item_mutator
     ResName: Dialog_mutator_itemlist
-    Prefab: {fileID: 1888033037372908, guid: cbe6a830a9c15491eb42457c49f16a18, type: 3}
+    Prefab: {fileID: 1888033037372908, guid: f5798cd8b3a146839a38aa4c223a8e06, type: 3}
   - IndexName: procedures_defnoreturn_mutator
     ResName: Dialog_mutator_proceduredef
     Prefab: {fileID: 1888033037372908, guid: f4d3a523aa9ab495a994965fc2e2c13f, type: 3}
