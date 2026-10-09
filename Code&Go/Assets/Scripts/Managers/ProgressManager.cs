@@ -106,7 +106,7 @@ public class ProgressManager : MonoBehaviour {
     /// <summary>
     /// Manage the data when a levels is completed
     /// </summary>
-    public void LevelCompleted(int starsAchieved) {
+    public void LevelCompleted(int starsAchieved, string code, int steps, bool specialBlockStar, bool minimumStepsStar, bool noHangingCodeStar) {
         int currentLevelIndex = GameManager.Instance.CurrentLevelIndex;
 
         // Set the stars for the current level complete
@@ -135,12 +135,16 @@ public class ProgressManager : MonoBehaviour {
         var levelName = GameManager.Instance.GetCurrentLevelName();
         CompletableTracker.Instance.Completed(levelName, CompletableTracker.CompletableType.Level)
             .WithSuccess(true)
-            .WithScoreRaw(starsAchieved);
+            .WithScoreRaw(starsAchieved)
+            .WithResultExtension("articoding://ext/steps", steps.ToString())
+            .WithResultExtension("articoding://ext/special_block", specialBlockStar.ToString())
+            .WithResultExtension("articoding://ext/minimum_steps", minimumStepsStar.ToString())
+            .WithResultExtension("articoding://ext/no_hanging_code", noHangingCodeStar.ToString())
+            .WithResultExtension("articoding://ext/code", "\r\n" + code);
         var categoryName = categoriesDataSO[categoryIndex].name_id;
         if (currentCategoryData.GetLevelsCompleted() < currentCategoryData.levelsData.Length) {
             CompletableTracker.Instance.Progressed(categoryName, CompletableTracker.CompletableType.Completable, (float)currentCategoryData.GetLevelsCompleted() / categoriesDataSO[categoryIndex].levels.Count);
-        }
-        else {
+        } else {
             CompletableTracker.Instance.Completed(categoryName, CompletableTracker.CompletableType.Completable)
                 .WithSuccess(true)
                 .WithScoreRaw(GetCategoryTotalStars(categoryIndex));

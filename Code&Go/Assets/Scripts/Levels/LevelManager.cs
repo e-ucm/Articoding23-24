@@ -171,16 +171,10 @@ public class LevelManager : MonoBehaviour {
             }
 
             if (!GameManager.Instance.IsCreatedLevel()) {
-                ProgressManager.Instance.LevelCompleted(starsController.GetStars())
-                    .WithResultExtension("articoding://ext/steps", boardManager.GetCurrentSteps())
-                    .WithResultExtension("articoding://ext/special_block", starsController.IsSpecialBlockStarActive())
-                    .WithResultExtension("articoding://ext/minimum_steps", starsController.IsMinimumStepsStarActive())
-                    .WithResultExtension("articoding://ext/no_hanging_code", starsController.IsNoHangingCodeStarActive())
-                    .WithResultExtension("articoding://ext/code", "\r\n" + text);
-
                 var dom = UBlockly.Xml.WorkspaceToDom(BlocklyUI.WorkspaceView.Workspace);
                 string text = UBlockly.Xml.DomToText(dom);
                 text = GameManager.Instance.ChangeCodeIDs(text);
+                ProgressManager.Instance.LevelCompleted(starsController.GetStars(), text, boardManager.GetCurrentSteps(), starsController.IsSpecialBlockStarActive(), starsController.IsMinimumStepsStarActive(), starsController.IsNoHangingCodeStarActive());
             }
             else
                 CompletableTracker.Instance.Completed(levelName, CompletableTracker.CompletableType.Level)
