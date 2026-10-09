@@ -171,21 +171,16 @@ public class LevelManager : MonoBehaviour {
             }
 
             if (!GameManager.Instance.IsCreatedLevel()) {
-                ProgressManager.Instance.LevelCompleted(starsController.GetStars());
-
-                var dom = UBlockly.Xml.WorkspaceToDom(BlocklyUI.WorkspaceView.Workspace);
-                string text = UBlockly.Xml.DomToText(dom);
-                text = GameManager.Instance.ChangeCodeIDs(text);
-
-                // setVar extensions are folded into LevelCompleted's Completed call inside ProgressManager
-                // Store them for ProgressManager to pick up via a local helper approach:
-                // Instead, emit a supplementary trace here for the code/steps/star data
-                GameObjectTracker.Instance.Used("level_completed_data")
+                ProgressManager.Instance.LevelCompleted(starsController.GetStars())
                     .WithResultExtension("articoding://ext/steps", boardManager.GetCurrentSteps())
                     .WithResultExtension("articoding://ext/special_block", starsController.IsSpecialBlockStarActive())
                     .WithResultExtension("articoding://ext/minimum_steps", starsController.IsMinimumStepsStarActive())
                     .WithResultExtension("articoding://ext/no_hanging_code", starsController.IsNoHangingCodeStarActive())
                     .WithResultExtension("articoding://ext/code", "\r\n" + text);
+
+                var dom = UBlockly.Xml.WorkspaceToDom(BlocklyUI.WorkspaceView.Workspace);
+                string text = UBlockly.Xml.DomToText(dom);
+                text = GameManager.Instance.ChangeCodeIDs(text);
             }
             else
                 CompletableTracker.Instance.Completed(levelName, CompletableTracker.CompletableType.Level)
